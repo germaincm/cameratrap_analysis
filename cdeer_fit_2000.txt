@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~DEM_mean"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                          Estimate     SE       z P(>|z|)
+[coyote] (Intercept)          9.44  92.16  0.1025  0.9184
+[deer] (Intercept)           -2.18 192.70 -0.0113  0.9910
+[coyote:deer] (Intercept)     3.08 192.71  0.0160  0.9873
+[coyote:deer] DEM_mean        2.52   1.27  1.9816  0.0475
+
+Detection (logit-scale):
+                      Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)    -0.124 0.189 -0.658 0.510787
+[coyote] seasonspring    0.283 0.260  1.089 0.275984
+[coyote] seasonsummer   -0.780 0.282 -2.767 0.005666
+[coyote] seasonwinter   -0.026 0.251 -0.104 0.917422
+[deer] (Intercept)      -0.219 0.234 -0.936 0.349074
+[deer] seasonspring     -0.102 0.318 -0.320 0.749133
+[deer] seasonsummer      1.264 0.355  3.561 0.000369
+[deer] seasonwinter     -0.842 0.323 -2.602 0.009259
+
+AIC: 1123.291 
+Number of sites: 14
+optim convergence code: 0
+optim iterations: 47 
+Bootstrap iterations: 0 
+
+$state
+                           Estimate         SE           z    P(>|z|)
+[coyote] (Intercept)       9.442383  92.158318  0.10245828 0.91839293
+[deer] (Intercept)        -2.178912 192.704671 -0.01130700 0.99097851
+[coyote:deer] (Intercept)  3.078175 192.708981  0.01597318 0.98725579
+[coyote:deer] DEM_mean     2.523354   1.273386  1.98160950 0.04752296
+
+$det
+                         Estimate        SE          z     P(>|z|)
+[coyote] (Intercept)  -0.12396588 0.1885089 -0.6576127 0.510787031
+[coyote] seasonspring  0.28299434 0.2597745  1.0893846 0.275984337
+[coyote] seasonsummer -0.77976156 0.2818584 -2.7665013 0.005666136
+[coyote] seasonwinter -0.02600313 0.2507983 -0.1036814 0.917422157
+[deer] (Intercept)    -0.21910754 0.2339924 -0.9363876 0.349073674
+[deer] seasonspring   -0.10182343 0.3184140 -0.3197832 0.749132719
+[deer] seasonsummer    1.26369011 0.3548293  3.5614033 0.000368878
+[deer] seasonwinter   -0.84167416 0.3234313 -2.6023276 0.009259334
+

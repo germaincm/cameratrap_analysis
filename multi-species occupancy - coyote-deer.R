@@ -65,7 +65,7 @@ b2000 <- left_join(b2000, human_dog_df, by="site_name")%>%
 cov<- b100 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area)
 cov100 <- as.data.frame(scale(cov))
 
-cov<- b500 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area)
+cov<- b500 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area, -Fcon_PA)
 cov500 <- as.data.frame(scale(cov))
 
 cov<- b2000 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area)
@@ -229,16 +229,17 @@ fit_dog <- occuMulti(detformulas = c('~season', '~season'),
 fit <- fitList(fit_null, fit_cor, fit_veg, fit_LFT, fit_H2O, fit_WV, fit_MV, fit_WVF,
                fit_WVO, fit_built, fit_DEM_median, fit_DEM_mean, fit_NDVI_median,
                fit_NDVI_mean, fit_POP_median, fit_POP_mean, fit_WVO_PA, fit_WVF_PA, 
-               fit_MV_PA, fit_FC_PA, fit_FM_PA, fit_FD_PA, fit_hum, fit_dog)
+               fit_MV_PA, fit_FC_PA,
+               fit_FM_PA, fit_FD_PA, fit_hum, fit_dog)
 modSel(fit)
 
-sink("modSel_cdeer_2000.txt")
+sink("cdeer_modSel_2000.txt")
 print(modSel(fit))
 sink()
 
 fit_cdeer_2000 <- fit_DEM_mean #is best model
 
-sink("fit_cdeer_2000a.txt")
+sink("cdeer_fit_2000.txt")
 print(summary(fit_cdeer_2000))
 sink()
 

@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~WVF_PA"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                          Estimate     SE       z P(>|z|)
+[coyote] (Intercept)          9.02  73.73  0.1224  0.9026
+[deer] (Intercept)           -2.11 151.95 -0.0139  0.9889
+[coyote:deer] (Intercept)     3.49 151.95  0.0230  0.9817
+[coyote:deer] WVF_PA          2.73   1.39  1.9605  0.0499
+
+Detection (logit-scale):
+                      Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)   -0.1241 0.189 -0.658 0.510485
+[coyote] seasonspring   0.2831 0.260  1.090 0.275799
+[coyote] seasonsummer  -0.7796 0.282 -2.766 0.005674
+[coyote] seasonwinter  -0.0259 0.251 -0.103 0.917864
+[deer] (Intercept)     -0.2216 0.234 -0.946 0.344053
+[deer] seasonspring    -0.0993 0.319 -0.312 0.755144
+[deer] seasonsummer     1.2662 0.355  3.567 0.000361
+[deer] seasonwinter    -0.8393 0.324 -2.594 0.009485
+
+AIC: 1124.266 
+Number of sites: 14
+optim convergence code: 0
+optim iterations: 49 
+Bootstrap iterations: 0 
+
+$state
+                           Estimate         SE           z    P(>|z|)
+[coyote] (Intercept)       9.022110  73.730891  0.12236541 0.90260963
+[deer] (Intercept)        -2.109637 151.946662 -0.01388406 0.98892248
+[coyote:deer] (Intercept)  3.493277 151.952516  0.02298927 0.98165883
+[coyote:deer] WVF_PA       2.732149   1.393589  1.96051312 0.04993585
+
+$det
+                         Estimate        SE          z      P(>|z|)
+[coyote] (Intercept)  -0.12405583 0.1885109 -0.6580831 0.5104847302
+[coyote] seasonspring  0.28310524 0.2597760  1.0898051 0.2757989918
+[coyote] seasonsummer -0.77963046 0.2818583 -2.7660368 0.0056742132
+[coyote] seasonwinter -0.02586364 0.2507996 -0.1031248 0.9178639576
+[deer] (Intercept)    -0.22155339 0.2341537 -0.9461877 0.3440528812
+[deer] seasonspring   -0.09933877 0.3185322 -0.3118642 0.7551437504
+[deer] seasonsummer    1.26615116 0.3549364  3.5672617 0.0003607312
+[deer] seasonwinter   -0.83931386 0.3235513 -2.5940677 0.0094847812
+

@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~WVF_PA"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                          Estimate     SE       z P(>|z|)
+[coyote] (Intercept)          9.23  82.93  0.1113  0.9114
+[deer] (Intercept)           -2.04 164.83 -0.0124  0.9901
+[coyote:deer] (Intercept)     3.44 164.84  0.0209  0.9833
+[coyote:deer] WVF_PA          3.07   1.59  1.9250  0.0542
+
+Detection (logit-scale):
+                      Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)   -0.1241 0.189 -0.658 0.510414
+[coyote] seasonspring   0.2831 0.260  1.090 0.275767
+[coyote] seasonsummer  -0.7796 0.282 -2.766 0.005674
+[coyote] seasonwinter  -0.0258 0.251 -0.103 0.917991
+[deer] (Intercept)     -0.2195 0.234 -0.938 0.348321
+[deer] seasonspring    -0.1014 0.318 -0.318 0.750188
+[deer] seasonsummer     1.2641 0.355  3.562 0.000368
+[deer] seasonwinter    -0.8413 0.323 -2.601 0.009291
+
+AIC: 1122.497 
+Number of sites: 14
+optim convergence code: 0
+optim iterations: 46 
+Bootstrap iterations: 0 
+
+$state
+                           Estimate         SE           z    P(>|z|)
+[coyote] (Intercept)       9.233423  82.933527  0.11133523 0.91135052
+[deer] (Intercept)        -2.036728 164.831399 -0.01235643 0.99014124
+[coyote:deer] (Intercept)  3.444517 164.837487  0.02089644 0.98332827
+[coyote:deer] WVF_PA       3.069213   1.594424  1.92496712 0.05423347
+
+$det
+                        Estimate        SE          z      P(>|z|)
+[coyote] (Intercept)  -0.1240761 0.1885103 -0.6581928 0.5104142246
+[coyote] seasonspring  0.2831234 0.2597756  1.0898768 0.2757674233
+[coyote] seasonsummer -0.7796331 0.2818587 -2.7660425 0.0056741132
+[coyote] seasonwinter -0.0258236 0.2507991 -0.1029653 0.9179905047
+[deer] (Intercept)    -0.2194683 0.2340117 -0.9378515 0.3483207254
+[deer] seasonspring   -0.1013844 0.3184273 -0.3183910 0.7501883381
+[deer] seasonsummer    1.2640585 0.3548424  3.5623095 0.0003676067
+[deer] seasonwinter   -0.8413397 0.3234463 -2.6011729 0.0092905621
+
