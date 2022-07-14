@@ -232,34 +232,9 @@ fit <- fitList(fit_null, fit_cor, fit_veg, fit_LFT, fit_H2O, fit_WV, fit_MV, fit
                fit_MV_PA, fit_FC_PA, fit_FM_PA, fit_FD_PA, fit_hum, fit_dog)
 modSel(fit)
 
-#second selection
-fit_multi1 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~NDVI_mean+WVF_PA'),
-                        maxOrder = 2,
-                        data = mdata)
-
-fit_multi2 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~~DEM_mean+WVF_dist'),
-                        maxOrder = 2,
-                        data = mdata)
-
-fit_multi3 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~DEM_mean+POP_mean'),
-                        maxOrder = 2,
-                        data = mdata)
-
-fit_multi4 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~NDVI_mean+DEM_mean'),
-                        maxOrder = 2,
-                        data = mdata)
-
-fit_multi5 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~DEM_mean+built'),
-                        maxOrder = 2,
-                        data = mdata)
-
-fit <- fitList(fit_NDVI_mean, fit_multi1, fit_multi2, fit_multi3, fit_multi4, fit_multi5)
-modSel(fit)
+sink("modSel_cdeer_2000.txt")
+print(modSel(fit))
+sink()
 
 fit_cdeer_2000 <- fit_DEM_mean #is best model
 
