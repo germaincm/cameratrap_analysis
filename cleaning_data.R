@@ -470,7 +470,7 @@ write.csv(d, "data_counts_week.csv")
 ###check results of for loop
 d%>%
   dplyr::filter(common_name == "coyote")%>%
-  dplyr::filter(site_name == "CPC3")
+  dplyr::filter(site_name == "TUW2")
 
 #####create human presence, dogs presence dataframe as covariates ####
 

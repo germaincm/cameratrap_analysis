@@ -1,47 +1,49 @@
 
 Call:
 occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
-    "~1", "~WVF_PA"), data = mdata, maxOrder = 2)
+    "~1", "~DEM_median+Fcon_PA"), data = mdata, maxOrder = 2)
 
 Occupancy (logit-scale):
-                          Estimate     SE       z P(>|z|)
-[coyote] (Intercept)          9.23  82.93  0.1113  0.9114
-[deer] (Intercept)           -2.04 164.83 -0.0124  0.9901
-[coyote:deer] (Intercept)     3.44 164.84  0.0209  0.9833
-[coyote:deer] WVF_PA          3.07   1.59  1.9250  0.0542
+                          Estimate    SE      z P(>|z|)
+[coyote] (Intercept)         1.883 1.394  1.350  0.1769
+[deer] (Intercept)           0.845 1.546  0.547  0.5844
+[coyote:deer] (Intercept)   -0.253 1.756 -0.144  0.8856
+[coyote:deer] DEM_median     2.616 1.547  1.691  0.0908
+[coyote:deer] Fcon_PA       -1.834 0.883 -2.078  0.0377
 
 Detection (logit-scale):
-                      Estimate    SE      z  P(>|z|)
-[coyote] (Intercept)   -0.1241 0.189 -0.658 0.510414
-[coyote] seasonspring   0.2831 0.260  1.090 0.275767
-[coyote] seasonsummer  -0.7796 0.282 -2.766 0.005674
-[coyote] seasonwinter  -0.0258 0.251 -0.103 0.917991
-[deer] (Intercept)     -0.2195 0.234 -0.938 0.348321
-[deer] seasonspring    -0.1014 0.318 -0.318 0.750188
-[deer] seasonsummer     1.2641 0.355  3.562 0.000368
-[deer] seasonwinter    -0.8413 0.323 -2.601 0.009291
+                      Estimate    SE       z P(>|z|)
+[coyote] (Intercept)   -0.1837 0.181 -1.0161  0.3096
+[coyote] seasonspring   0.3279 0.243  1.3501  0.1770
+[coyote] seasonsummer  -0.4488 0.250 -1.7921  0.0731
+[coyote] seasonwinter  -0.0221 0.238 -0.0929  0.9260
+[deer] (Intercept)     -0.4685 0.213 -2.2020  0.0277
+[deer] seasonspring     0.0630 0.299  0.2111  0.8328
+[deer] seasonsummer     0.5638 0.305  1.8490  0.0645
+[deer] seasonwinter    -0.7738 0.314 -2.4629  0.0138
 
-AIC: 1122.497 
-Number of sites: 14
+AIC: 1344.959 
+Number of sites: 20
 optim convergence code: 0
 optim iterations: 46 
 Bootstrap iterations: 0 
 
 $state
-                           Estimate         SE           z    P(>|z|)
-[coyote] (Intercept)       9.233423  82.933527  0.11133523 0.91135052
-[deer] (Intercept)        -2.036728 164.831399 -0.01235643 0.99014124
-[coyote:deer] (Intercept)  3.444517 164.837487  0.02089644 0.98332827
-[coyote:deer] WVF_PA       3.069213   1.594424  1.92496712 0.05423347
+                            Estimate       SE          z    P(>|z|)
+[coyote] (Intercept)       1.8825830 1.394185  1.3503107 0.17691633
+[deer] (Intercept)         0.8454896 1.545923  0.5469156 0.58443669
+[coyote:deer] (Intercept) -0.2526669 1.755739 -0.1439091 0.88557222
+[coyote:deer] DEM_median   2.6156930 1.546545  1.6913142 0.09077681
+[coyote:deer] Fcon_PA     -1.8341374 0.882585 -2.0781425 0.03769624
 
 $det
-                        Estimate        SE          z      P(>|z|)
-[coyote] (Intercept)  -0.1240761 0.1885103 -0.6581928 0.5104142246
-[coyote] seasonspring  0.2831234 0.2597756  1.0898768 0.2757674233
-[coyote] seasonsummer -0.7796331 0.2818587 -2.7660425 0.0056741132
-[coyote] seasonwinter -0.0258236 0.2507991 -0.1029653 0.9179905047
-[deer] (Intercept)    -0.2194683 0.2340117 -0.9378515 0.3483207254
-[deer] seasonspring   -0.1013844 0.3184273 -0.3183910 0.7501883381
-[deer] seasonsummer    1.2640585 0.3548424  3.5623095 0.0003676067
-[deer] seasonwinter   -0.8413397 0.3234463 -2.6011729 0.0092905621
+                         Estimate        SE           z    P(>|z|)
+[coyote] (Intercept)  -0.18370047 0.1807981 -1.01605322 0.30960405
+[coyote] seasonspring  0.32785868 0.2428329  1.35014127 0.17697067
+[coyote] seasonsummer -0.44878566 0.2504239 -1.79210401 0.07311631
+[coyote] seasonwinter -0.02210530 0.2380211 -0.09287118 0.92600590
+[deer] (Intercept)    -0.46849781 0.2127561 -2.20204144 0.02766238
+[deer] seasonspring    0.06301285 0.2985381  0.21107138 0.83283157
+[deer] seasonsummer    0.56384886 0.3049468  1.84900737 0.06445675
+[deer] seasonwinter   -0.77376627 0.3141658 -2.46292318 0.01378094
 

@@ -12,7 +12,7 @@ setwd("~/Documents/GitHub/cameratrap_analysis")
 
 ###################START HERE IF WANTING TO USE DIRECTLY THE DETECTION MATRIX #############
 ###read directly the detection matrix RDS to avoid every step of this script up to here###
-detection_matrix  <- readRDS(gzcon(url("https://github.com/tgelmi-candusso/cameratrap_analysis/raw/main/detection_matrix_Scarborough.rds")))
+detection_matrix  <- readRDS(gzcon(url("https://github.com/germaincm/cameratrap_analysis/raw/main/detection_matrix_all_15072022.rds")))
 
 ##now to call for the detection matrix of a specific animal you can call it this way
 detection_matrix$deer
@@ -70,7 +70,7 @@ b2000 <- left_join(b2000, human_dog_df, by="site_name")%>%
 cov<- b100 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area)
 cov100 <- as.data.frame(scale(cov))
 
-cov<- b500 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area, -Fcon_PA)
+cov<- b500 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area)
 cov500 <- as.data.frame(scale(cov))
 
 cov<- b2000 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area)
@@ -109,7 +109,7 @@ cd2000 <- unmarkedFrameOccuMulti(y = y_list,
                                 obsCovs = det_list)
 
 ##call animal data
-mdata <- cd2000              ##toggle buffer size here
+mdata <- cd100              ##toggle buffer size here
 
 #first selection
 fit_null <- occuMulti(detformulas = c('~season', '~season'),
@@ -238,20 +238,49 @@ fit <- fitList(fit_null, fit_cor, fit_veg, fit_LFT, fit_H2O, fit_WV, fit_MV, fit
                fit_FM_PA, fit_FD_PA, fit_hum, fit_dog)
 modSel(fit)
 
-sink("cdeer_modSel_2000.txt")
+sink("cdeer_modSel_100.txt")
 print(modSel(fit))
 sink()
 
-fit_cdeer_2000 <- fit_DEM_mean #is best model
+#second selection
+fit_multi1 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~DEM_median+Fcon_PA'),
+                        maxOrder = 2,
+                        data = mdata)
 
-sink("cdeer_fit_2000.txt")
-print(summary(fit_cdeer_2000))
+fit_multi2 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~DEM_median+Fdec_PA'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit_multi3 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~Fdec_PA+Fcon_PA'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit_multi4 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~Fcon_PA+LFT_dist'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit_multi5 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~DEM_median+LFT_dist'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit <- fitList(fit_DEM_median, fit_FC_PA, fit_multi1, fit_multi2, fit_multi3, fit_multi4, fit_multi5)
+modSel(fit)
+
+fit_cdeer_100 <- fit_multi1 #is best model
+
+sink("cdeer_fit_100.txt")
+print(summary(fit_cdeer_100))
 sink()
 
 
 ##notes for interpretation
 ##COYOTE-DEER
-##at 100 buffer: from the models with AIC <2 null model, WVF_PA has the most significant effect
+##at 100 buffer: from 2nd round of hierarchical model selection, DEM_median+Fcon_PA had lowest AIC w/ Fcon_PA having a significant effect
 ##at 500 buffer: from the models with AIC <2 null model, WVF_PA has the most significant effect
 ##at 2000 buffer: from the models with AIC < null model, DEM_mean has the most significant effect;
   ##NDVI_mean has better AIC but p value > 0.3; combibing DEM+NDVI results in loss of significance 
@@ -259,25 +288,26 @@ sink()
 
 ##predict
 nd_cond1 <- data.frame(
-  DEM_mean = seq(min(cov2000$DEM_mean), max(cov2000$DEM_mean), length.out = 1000))  #cov of interest is the only one not averaged out
-coy_deer1 <- unmarked::predict(fit_DEM_mean, type = 'state', species = 'coyote', cond = 'deer', 
+  DEM_median = rep(mean(cov100$DEM_median), 100),
+  Fcon_PA = seq(min(cov100$Fcon_PA), max(cov100$Fcon_PA), length.out = 1000))  #cov of interest is the only one not averaged out
+coy_deer1 <- unmarked::predict(fit_multi1, type = 'state', species = 'coyote', cond = 'deer', 
                                newdata = nd_cond1)
-coy_deer0 <- unmarked::predict(fit_DEM_mean, type = 'state', species = 'coyote',
+coy_deer0 <- unmarked::predict(fit_multi1, type = 'state', species = 'coyote',
                                cond = '-deer', newdata = nd_cond1)
 
 gg_coy_cond <- data.frame(
-  DEM_mean = rep(nd_cond1$DEM_mean, 2),
+  Fcon_PA = rep(nd_cond1$Fcon_PA, 2),
   occupancy = c(coy_deer1$Predicted, coy_deer0$Predicted),
   low = c(coy_deer1$lower, coy_deer0$lower),
   high = c(coy_deer1$upper, coy_deer0$upper),
   conditional = rep(c('Deer present', 'Deer absent'),
                     each = 1000))
 
-ggplot(gg_coy_cond, aes(x = DEM_mean, y = occupancy, color = conditional)) +
-  #geom_ribbon(aes(ymin = low, ymax = high, fill = conditional)) +
+ggplot(gg_coy_cond, aes(x = Fcon_PA, y = occupancy, group = conditional)) +
+  geom_ribbon(aes(ymin = low, ymax = high, fill = conditional)) +
   geom_line() +
   ylab('Conditional coyote\noccupancy probability') +
-  xlab('Digital Elevation Model (mean)') +
+  xlab('Coniferous forest % area') +
   labs(fill = 'Deer state') # +
 #theme(text = element_text(size = 25),
 #legend.position = c(0.75, 0.85))
