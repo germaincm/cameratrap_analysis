@@ -3,6 +3,11 @@ library(dplyr)
 library(lubridate)
 library(tidyverse)
 library(ggplot2)
+library(plyr)
+library(rstan)
+
+getwd()
+setwd("~/Documents/GitHub/cameratrap_analysis")
 
 
 ###################START HERE IF WANTING TO USE DIRECTLY THE DETECTION MATRIX #############
@@ -65,7 +70,7 @@ b2000 <- left_join(b2000, human_dog_df, by="site_name")%>%
 cov<- b100 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area)
 cov100 <- as.data.frame(scale(cov))
 
-cov<- b500 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area, -Fcon_PA)
+cov<- b500 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area)
 cov500 <- as.data.frame(scale(cov))
 
 cov<- b2000 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area)
@@ -86,25 +91,24 @@ det_list <- list(season = det_covs)
 
 ###MULTISPECIES OCCUPANCY
 
-##create y_list for interaction of interest
+##create an unmarked frame for each interaction of interest 
 y_list <- list(coyote = as.matrix(coyote %>% select(-1)),  ##toggle predator of interest
-                  deer = as.matrix(deer %>% select(-1)))   ##toggle prey of interest
+                  rabbit = as.matrix(rabbit %>% select(-1)))   ##toggle prey of interest
 
-##create an unmarked frame for each buffer for clarity
-cd100 <- unmarkedFrameOccuMulti(y = y_list,
+crab100 <- unmarkedFrameOccuMulti(y = y_list,
                                       siteCovs = cov100,
                                       obsCovs = det_list)
 
-cd500 <- unmarkedFrameOccuMulti(y = y_list,
+crab500 <- unmarkedFrameOccuMulti(y = y_list,
                                 siteCovs = cov500,
                                 obsCovs = det_list)
 
-cd2000 <- unmarkedFrameOccuMulti(y = y_list,
+crab2000 <- unmarkedFrameOccuMulti(y = y_list,
                                 siteCovs = cov2000,
                                 obsCovs = det_list)
 
 ##call animal data
-mdata <- cd2000              ##toggle buffer size here
+mdata <- crab100
 
 #first selection
 fit_null <- occuMulti(detformulas = c('~season', '~season'),
@@ -229,27 +233,50 @@ fit_dog <- occuMulti(detformulas = c('~season', '~season'),
 fit <- fitList(fit_null, fit_cor, fit_veg, fit_LFT, fit_H2O, fit_WV, fit_MV, fit_WVF,
                fit_WVO, fit_built, fit_DEM_median, fit_DEM_mean, fit_NDVI_median,
                fit_NDVI_mean, fit_POP_median, fit_POP_mean, fit_WVO_PA, fit_WVF_PA, 
-               fit_MV_PA, fit_FC_PA,
-               fit_FM_PA, fit_FD_PA, fit_hum, fit_dog)
+               fit_MV_PA, fit_FC_PA, fit_FM_PA, fit_FD_PA, fit_hum, fit_dog)
 modSel(fit)
 
-sink("cdeer_modSel_2000.txt")
-print(modSel(fit))
-sink()
+#second selection
+fit_multi1 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~veg_complexity+WVF_PA'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit_multi2 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~~DEM_mean+WVF_dist'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit_multi3 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~DEM_mean+POP_mean'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit_multi4 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~NDVI_mean+DEM_mean'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit_multi5 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~DEM_mean+built'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit <- fitList(fit_NDVI_mean, fit_multi1, fit_multi2, fit_multi3, fit_multi4, fit_multi5)
+modSel(fit)
 
 fit_cdeer_2000 <- fit_DEM_mean #is best model
 
-sink("cdeer_fit_2000.txt")
+sink("fit_cdeer_2000a.txt")
 print(summary(fit_cdeer_2000))
 sink()
 
 
 ##notes for interpretation
-##COYOTE-DEER
-##at 100 buffer: from the models with AIC <2 null model, WVF_PA has the most significant effect
-##at 500 buffer: from the models with AIC <2 null model, WVF_PA has the most significant effect
-##at 2000 buffer: from the models with AIC < null model, DEM_mean has the most significant effect;
-  ##NDVI_mean has better AIC but p value > 0.3; combibing DEM+NDVI results in loss of significance 
+##COYOTE-RABBIT
+##at 100 buffer: 
+##at 500 buffer:
+##at 2000 buffer: 
 
 
 ##predict

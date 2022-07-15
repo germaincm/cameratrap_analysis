@@ -1,17 +1,14 @@
 ###trying to clean undeployed periods of time
 library(dplyr)
 library(lubridate)
-library(ggplot2)
-library(dplyr)
 library(plyr)
 library(tidyverse)
-library(lubridate)
 library(rstan)
 library(unmarked)
 library(ggplot2)
 
 getwd()
-setwd("C:/Users/tizge/Documents/GitHub/cameratrap_analysis")
+setwd("~/Documents/GitHub/cameratrap_analysis")
 
 data<-read_csv("TimelapseDatabase_FULL_04072022 (1).csv")%>%
   filter(DeleteFlag == FALSE)%>%
