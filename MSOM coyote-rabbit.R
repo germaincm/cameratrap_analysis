@@ -12,11 +12,7 @@ setwd("~/Documents/GitHub/cameratrap_analysis")
 
 ###################START HERE IF WANTING TO USE DIRECTLY THE DETECTION MATRIX #############
 ###read directly the detection matrix RDS to avoid every step of this script up to here###
-detection_matrix  <- readRDS(gzcon(url("https://github.com/tgelmi-candusso/cameratrap_analysis/raw/main/detection_matrix_Scarborough.rds")))
-
-##now to call for the detection matrix of a specific animal you can call it this way
-detection_matrix$deer
-detection_matrix$coyote
+detection_matrix  <- readRDS(gzcon(url("https://github.com/germaincm/cameratrap_analysis/raw/main/detection_matrix_all_15072022.rds")))
 
 ###save species specific detection matrix into an object:
 coyote <- detection_matrix$coyote
@@ -236,7 +232,11 @@ fit <- fitList(fit_null, fit_cor, fit_veg, fit_LFT, fit_H2O, fit_WV, fit_MV, fit
                fit_MV_PA, fit_FC_PA, fit_FM_PA, fit_FD_PA, fit_hum, fit_dog)
 modSel(fit)
 
-#second selection
+sink("crabbit_modSel_100.txt")
+print(modSel(fit))
+sink()
+
+#second selection <- only if necessary
 fit_multi1 <- occuMulti(detformulas = c('~season', '~season'),
                         stateformulas = c('~1', '~1', '~veg_complexity+WVF_PA'),
                         maxOrder = 2,
@@ -265,10 +265,10 @@ fit_multi5 <- occuMulti(detformulas = c('~season', '~season'),
 fit <- fitList(fit_NDVI_mean, fit_multi1, fit_multi2, fit_multi3, fit_multi4, fit_multi5)
 modSel(fit)
 
-fit_cdeer_2000 <- fit_DEM_mean #is best model
+crabbit_fit_100 <- fit_DEM_mean #is best model
 
-sink("fit_cdeer_2000a.txt")
-print(summary(fit_cdeer_2000))
+sink("crabbit_fit_100.txt")
+print(summary(crabbit_fit_100))
 sink()
 
 

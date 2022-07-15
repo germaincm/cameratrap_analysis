@@ -166,6 +166,11 @@ rev_sites <- c("TUW17",
                #"TUW14",
                #"TUW1")
 
+###write DateTime dataframe for waiting time script
+d <- data %>%
+  filter(site_name %in% rev_sites)
+write.csv(d, "data_wt_revised.csv")
+
 # ###determining malfunction dates (for record) visually check for periods when camera was not functioning#####
 # dpS <- data %>% filter(site_name == Sca)%>% ### I replotted this one after fixing TUW42
 #   filter(site_name != "TUW20")%>%
