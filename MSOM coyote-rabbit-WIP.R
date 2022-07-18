@@ -12,6 +12,20 @@ setwd("~/Documents/GitHub/cameratrap_analysis")
 
 ###################START HERE IF WANTING TO USE DIRECTLY THE DETECTION MATRIX #############
 ###read directly the detection matrix RDS to avoid every step of this script up to here###
+library(unmarked)
+library(dplyr)
+library(lubridate)
+library(tidyverse)
+library(ggplot2)
+library(plyr)
+library(rstan)
+
+getwd()
+setwd("~/Documents/GitHub/cameratrap_analysis")
+
+
+###################START HERE IF WANTING TO USE DIRECTLY THE DETECTION MATRIX #############
+###read directly the detection matrix RDS to avoid every step of this script up to here###
 detection_matrix  <- readRDS(gzcon(url("https://github.com/germaincm/cameratrap_analysis/raw/main/detection_matrix_all_15072022.rds")))
 
 ###save species specific detection matrix into an object:
@@ -89,23 +103,23 @@ det_list <- list(season = det_covs)
 
 ##create y_list for interaction of interest
 y_list <- list(coyote = as.matrix(coyote %>% select(-1)),  ##toggle predator of interest
-               raccoon = as.matrix(raccoon %>% select(-1)))   ##toggle prey of interest
+               rabbit = as.matrix(rabbit %>% select(-1)))   ##toggle prey of interest
 
 ##create an unmarked frame for each buffer for clarity
-crac100 <- unmarkedFrameOccuMulti(y = y_list,
+cr100 <- unmarkedFrameOccuMulti(y = y_list,
                                 siteCovs = cov100,
                                 obsCovs = det_list)
 
-crac500 <- unmarkedFrameOccuMulti(y = y_list,
+cr500 <- unmarkedFrameOccuMulti(y = y_list,
                                 siteCovs = cov500,
                                 obsCovs = det_list)
 
-crac2000 <- unmarkedFrameOccuMulti(y = y_list,
+cr2000 <- unmarkedFrameOccuMulti(y = y_list,
                                  siteCovs = cov2000,
                                  obsCovs = det_list)
 
 ##call animal data
-mdata <- crac100
+mdata <- cr100
 
 #first selection
 fit_null <- occuMulti(detformulas = c('~season', '~season'),
@@ -169,19 +183,19 @@ fit <- fitList(fit_null, fit_WVF_dist, fit_WVF_PA, fit_Fdec_PA, fit_Fcon_PA,
                fit_POP_median, fit_hum)
 modSel(fit)
 
-sink("craccoon_modSel_2000.txt")
+sink("crabbit_modSel_2000.txt")
 print(modSel(fit))
 sink()
 
-fit_craccoon_2000 <- fit_multi4 #is best model
+fit_crabbit_2000 <- fit_multi4 #is best model
 
-sink("craccoon_fit_2000.txt")
-print(summary(fit_craccoon_2000))
+sink("crabbit_fit_2000.txt")
+print(summary(fit_crabbit_2000))
 sink()
 
 
 ##notes for interpretation
-##COYOTE-RACCOON
+##COYOTE-RABBIT
 # at 100 buffer:
 
 # at 500 buffer:

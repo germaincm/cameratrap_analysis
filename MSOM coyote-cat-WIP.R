@@ -27,11 +27,11 @@ squirrel <- detection_matrix$squirrel
 #### COVARIATES ########
 
 ##GENERATE COVARIATE dataframes for the model , make sure to readapt the site_names AND add human/dog presence####
-urlfile100="https://raw.githubusercontent.com/tgelmi-candusso/cameratrap_analysis/main/cov_1000.csv"
-urlfile500="https://raw.githubusercontent.com/tgelmi-candusso/cameratrap_analysis/main/cov_500.csv"
-#urlfile1000="https://raw.githubusercontent.com/tgelmi-candusso/cameratrap_analysis/main/cov_1000.csv"
-urlfile2000="https://raw.githubusercontent.com/tgelmi-candusso/cameratrap_analysis/main/cov_2000.csv"
-urlfilehumans="https://raw.githubusercontent.com/tgelmi-candusso/cameratrap_analysis/main/human_dog_df.csv"
+urlfile100="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/cov_100.csv"
+urlfile500="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/cov_500.csv"
+#urlfile1000="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/cov_1000.csv"
+urlfile2000="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/cov_2000.csv"
+urlfilehumans="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/human_dog_df.csv"
 
 human_dog_df <- read.csv(urlfilehumans) %>% 
   select(-1) %>% 
@@ -87,24 +87,25 @@ det_list <- list(season = det_covs)
 
 ###MULTISPECIES OCCUPANCY
 
-##create an unmarked frame for each interaction of interest 
+##create y_list for interaction of interest
 y_list <- list(coyote = as.matrix(coyote %>% select(-1)),  ##toggle predator of interest
-                  rabbit = as.matrix(rabbit %>% select(-1)))   ##toggle prey of interest
+               cat = as.matrix(cat %>% select(-1)))   ##toggle prey of interest
 
-crab100 <- unmarkedFrameOccuMulti(y = y_list,
-                                      siteCovs = cov100,
-                                      obsCovs = det_list)
+##create an unmarked frame for each buffer for clarity
+cc100 <- unmarkedFrameOccuMulti(y = y_list,
+                                siteCovs = cov100,
+                                obsCovs = det_list)
 
-crab500 <- unmarkedFrameOccuMulti(y = y_list,
+cc500 <- unmarkedFrameOccuMulti(y = y_list,
                                 siteCovs = cov500,
                                 obsCovs = det_list)
 
-crab2000 <- unmarkedFrameOccuMulti(y = y_list,
-                                siteCovs = cov2000,
-                                obsCovs = det_list)
+cc2000 <- unmarkedFrameOccuMulti(y = y_list,
+                                 siteCovs = cov2000,
+                                 obsCovs = det_list)
 
 ##call animal data
-mdata <- crab100
+mdata <- cr100
 
 #first selection
 fit_null <- occuMulti(detformulas = c('~season', '~season'),
@@ -112,171 +113,113 @@ fit_null <- occuMulti(detformulas = c('~season', '~season'),
                       maxOrder = 2,
                       data = mdata)
 
-fit_veg <- occuMulti(detformulas = c('~season', '~season'),
-                     stateformulas = c('~1', '~1', '~veg_complexity'),
-                     maxOrder = 2,
-                     data = mdata)
-
-fit_cor <- occuMulti(detformulas = c('~season', '~season'),
-                     stateformulas = c('~1', '~1', '~corridor'),
-                     maxOrder = 2,
-                     data = mdata)
-
-fit_LFT <- occuMulti(detformulas = c('~season', '~season'),
-                     stateformulas = c('~1', '~1', '~LFT_dist'),
-                     maxOrder = 2,
-                     data = mdata)
-
-fit_H2O <- occuMulti(detformulas = c('~season', '~season'),
-                     stateformulas = c('~1', '~1', '~H2O_dist'),
-                     maxOrder = 2,
-                     data = mdata)
-
-fit_WV <- occuMulti(detformulas = c('~season', '~season'),
-                    stateformulas = c('~1', '~1', '~WV_dist'),
-                    maxOrder = 2,
-                    data = mdata)
-
-fit_MV <- occuMulti(detformulas = c('~season', '~season'),
-                    stateformulas = c('~1', '~1', '~MV_dist'),
-                    maxOrder = 2,
-                    data = mdata)
-
-fit_WVF <- occuMulti(detformulas = c('~season', '~season'),
-                     stateformulas = c('~1', '~1', '~WVF_dist'),
-                     maxOrder = 2,
-                     data = mdata)
-
-fit_WVO <- occuMulti(detformulas = c('~season', '~season'),
-                     stateformulas = c('~1', '~1', '~WVO_dist'),
-                     maxOrder = 2,
-                     data = mdata)
-
-fit_built <- occuMulti(detformulas = c('~season', '~season'),
-                       stateformulas = c('~1', '~1', '~built'),
-                       maxOrder = 2,
-                       data = mdata)
-
-fit_DEM_median <- occuMulti(detformulas = c('~season', '~season'),
-                            stateformulas = c('~1', '~1', '~DEM_median'),
-                            maxOrder = 2,
-                            data = mdata)
-
-fit_DEM_mean <- occuMulti(detformulas = c('~season', '~season'),
-                          stateformulas = c('~1', '~1', '~DEM_mean'),
+fit_WVF_dist <- occuMulti(detformulas = c('~season', '~season'),
+                          stateformulas = c('~1', '~1', '~WVF_dist'),
                           maxOrder = 2,
                           data = mdata)
-
-fit_NDVI_median <- occuMulti(detformulas = c('~season', '~season'),
-                             stateformulas = c('~1', '~1', '~NDVI_median'),
-                             maxOrder = 2,
-                             data = mdata)
-
-fit_NDVI_mean <- occuMulti(detformulas = c('~season', '~season'),
-                           stateformulas = c('~1', '~1', '~NDVI_mean'),
-                           maxOrder = 2,
-                           data = mdata)
-
-fit_POP_median <- occuMulti(detformulas = c('~season', '~season'),
-                            stateformulas = c('~1', '~1', '~POP_median'),
-                            maxOrder = 2,
-                            data = mdata)
-
-fit_POP_mean <- occuMulti(detformulas = c('~season', '~season'),
-                          stateformulas = c('~1', '~1', '~POP_mean'),
-                          maxOrder = 2,
-                          data = mdata)
-
-fit_WVO_PA <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~WVO_PA'),
-                        maxOrder = 2,
-                        data = mdata)
 
 fit_WVF_PA <- occuMulti(detformulas = c('~season', '~season'),
                         stateformulas = c('~1', '~1', '~WVF_PA'),
                         maxOrder = 2,
                         data = mdata)
 
-fit_MV_PA <- occuMulti(detformulas = c('~season', '~season'),
-                       stateformulas = c('~1', '~1', '~MV_PA'),
+fit_Fdec_PA <- occuMulti(detformulas = c('~season', '~season'),
+                         stateformulas = c('~1', '~1', '~Fdec_PA'),
+                         maxOrder = 2,
+                         data = mdata)
+
+fit_Fcon_PA <- occuMulti(detformulas = c('~season', '~season'),
+                         stateformulas = c('~1', '~1', '~Fcon_PA'),
+                         maxOrder = 2,
+                         data = mdata)
+
+fit_Fmix_PA <- occuMulti(detformulas = c('~season', '~season'),
+                         stateformulas = c('~1', '~1', '~Fmix_PA'),
+                         maxOrder = 2,
+                         data = mdata)
+
+fit_built <- occuMulti(detformulas = c('~season', '~season'),
+                       stateformulas = c('~1', '~1', '~built'),
                        maxOrder = 2,
                        data = mdata)
 
-fit_FD_PA <- occuMulti(detformulas = c('~season', '~season'),
-                       stateformulas = c('~1', '~1', '~Fdec_PA'),
-                       maxOrder = 2,
-                       data = mdata)
+fit_LFT_dist <- occuMulti(detformulas = c('~season', '~season'),
+                          stateformulas = c('~1', '~1', '~LFT_dist'),
+                          maxOrder = 2,
+                          data = mdata)
 
-fit_FM_PA <- occuMulti(detformulas = c('~season', '~season'),
-                       stateformulas = c('~1', '~1', '~Fmix_PA'),
-                       maxOrder = 2,
-                       data = mdata)
+fit_POP_mean <- occuMulti(detformulas = c('~season', '~season'),
+                          stateformulas = c('~1', '~1', '~POP_mean'),
+                          maxOrder = 2,
+                          data = mdata)
 
-fit_FC_PA <- occuMulti(detformulas = c('~season', '~season'),
-                       stateformulas = c('~1', '~1', '~Fcon_PA'),
-                       maxOrder = 2,
-                       data = mdata)
+fit_POP_median <- occuMulti(detformulas = c('~season', '~season'),
+                            stateformulas = c('~1', '~1', '~POP_median'),
+                            maxOrder = 2,
+                            data = mdata)
 
 fit_hum <- occuMulti(detformulas = c('~season', '~season'),
                      stateformulas = c('~1', '~1', '~total_freq_humans'),
                      maxOrder = 2,
                      data = mdata)
-fit_dog <- occuMulti(detformulas = c('~season', '~season'),
-                     stateformulas = c('~1', '~1', '~total_freq_dogs'),
-                     maxOrder = 2,
-                     data = mdata)
 
-fit <- fitList(fit_null, fit_cor, fit_veg, fit_LFT, fit_H2O, fit_WV, fit_MV, fit_WVF,
-               fit_WVO, fit_built, fit_DEM_median, fit_DEM_mean, fit_NDVI_median,
-               fit_NDVI_mean, fit_POP_median, fit_POP_mean, fit_WVO_PA, fit_WVF_PA, 
-               fit_MV_PA, fit_FC_PA, fit_FM_PA, fit_FD_PA, fit_hum, fit_dog)
+
+fit <- fitList(fit_null, fit_WVF_dist, fit_WVF_PA, fit_Fdec_PA, fit_Fcon_PA,
+               fit_Fmix_PA, fit_built, fit_LFT_dist, fit_POP_mean,
+               fit_POP_median, fit_hum)
 modSel(fit)
 
-sink("crabbit_modSel_100.txt")
+sink("ccat_modSel_2000.txt")
 print(modSel(fit))
 sink()
 
-#second selection <- only if necessary
-fit_multi1 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~veg_complexity+WVF_PA'),
-                        maxOrder = 2,
-                        data = mdata)
+fit_ccat_2000 <- fit_multi4 #is best model
 
-fit_multi2 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~~DEM_mean+WVF_dist'),
-                        maxOrder = 2,
-                        data = mdata)
-
-fit_multi3 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~DEM_mean+POP_mean'),
-                        maxOrder = 2,
-                        data = mdata)
-
-fit_multi4 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~NDVI_mean+DEM_mean'),
-                        maxOrder = 2,
-                        data = mdata)
-
-fit_multi5 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~DEM_mean+built'),
-                        maxOrder = 2,
-                        data = mdata)
-
-fit <- fitList(fit_NDVI_mean, fit_multi1, fit_multi2, fit_multi3, fit_multi4, fit_multi5)
-modSel(fit)
-
-crabbit_fit_100 <- fit_DEM_mean #is best model
-
-sink("crabbit_fit_100.txt")
-print(summary(crabbit_fit_100))
+sink("ccat_fit_2000.txt")
+print(summary(fit_ccat_2000))
 sink()
 
 
 ##notes for interpretation
-##COYOTE-RABBIT
-##at 100 buffer: 
-##at 500 buffer:
-##at 2000 buffer: 
+##COYOTE-CAT
+# at 100 buffer:
+
+# at 500 buffer:
+
+# at 2000 buffer: 
+
+
+#second selection
+fit_multi1 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~LFT_dist+Fdec_PA'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit_multi2 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~Fdec_PA+LFT_dist'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit_multi3 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~Fdec_PA+WVF_dist'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit_multi4 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~Fdec_PA+Fcon_PA'),
+                        maxOrder = 2,
+                        data = mdata)
+
+fit_multi5 <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~Fdec_PA+Fmix_PA'),
+                        maxOrder = 2,
+                        data = mdata)
+
+
+fit <- fitList(fit_Fdec_PA, fit_multi1, fit_multi2, fit_multi3, fit_multi4, fit_multi5)
+modSel(fit)
+
+
 
 
 ##predict

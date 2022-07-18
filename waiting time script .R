@@ -361,6 +361,20 @@ ggplot(data = min_coyprey,
   scale_x_continuous(limits=c(0,12))
 ggsave("waitingtime_coyprey_density_12.png")
 
+<<<<<<< HEAD
+#pup season
+ggplot(data = min_coyprey_pup, 
+       mapping = aes(x = time_interval, color = Species_1)) +
+  geom_density()+
+  theme_bw() +
+  labs(x = "Minimum-time between detection at same site (hour)",
+       y = "Density", 
+       title = "Minimum time-to-encounter, Prey then Coyote, 12 hrs - May to August") +
+  scale_x_continuous(limits=c(0,12))
+ggsave("waitingtime_coyprey_density_12_summer.png")
+
+=======
+>>>>>>> parent of ee456cc (updated waiting time, RDS & plots)
 
 ##FOX VS ALL PREY
 

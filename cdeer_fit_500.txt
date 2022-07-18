@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~Fcon_PA"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                          Estimate     SE      z P(>|z|)
+[coyote] (Intercept)         2.013   1.47  1.368   0.171
+[deer] (Intercept)           0.968   1.62  0.598   0.550
+[coyote:deer] (Intercept)  -37.225  46.85 -0.795   0.427
+[coyote:deer] Fcon_PA      -95.789 119.91 -0.799   0.424
+
+Detection (logit-scale):
+                      Estimate    SE       z P(>|z|)
+[coyote] (Intercept)   -0.1905 0.180 -1.0553  0.2913
+[coyote] seasonspring   0.3345 0.243  1.3789  0.1679
+[coyote] seasonsummer  -0.4421 0.250 -1.7669  0.0772
+[coyote] seasonwinter  -0.0154 0.238 -0.0649  0.9483
+[deer] (Intercept)     -0.4792 0.213 -2.2539  0.0242
+[deer] seasonspring     0.0738 0.298  0.2474  0.8046
+[deer] seasonsummer     0.5746 0.305  1.8847  0.0595
+[deer] seasonwinter    -0.7631 0.314 -2.4299  0.0151
+
+AIC: 1348.668 
+Number of sites: 20
+optim convergence code: 0
+optim iterations: 134 
+Bootstrap iterations: 0 
+
+$state
+                             Estimate         SE          z   P(>|z|)
+[coyote] (Intercept)        2.0125816   1.471268  1.3679230 0.1713362
+[deer] (Intercept)          0.9679796   1.619142  0.5978349 0.5499501
+[coyote:deer] (Intercept) -37.2248334  46.852495 -0.7945112 0.4268979
+[coyote:deer] Fcon_PA     -95.7893173 119.906351 -0.7988678 0.4243671
+
+$det
+                         Estimate        SE           z    P(>|z|)
+[coyote] (Intercept)  -0.19045120 0.1804687 -1.05531403 0.29128173
+[coyote] seasonspring  0.33450345 0.2425874  1.37889896 0.16792591
+[coyote] seasonsummer -0.44205144 0.2501865 -1.76688749 0.07724707
+[coyote] seasonwinter -0.01542110 0.2377369 -0.06486625 0.94828050
+[deer] (Intercept)    -0.47924492 0.2126329 -2.25386073 0.02420493
+[deer] seasonspring    0.07382332 0.2984494  0.24735626 0.80463252
+[deer] seasonsummer    0.57458307 0.3048608  1.88473929 0.05946505
+[deer] seasonwinter   -0.76308809 0.3140367 -2.42993290 0.01510162
+
