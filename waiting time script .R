@@ -57,12 +57,10 @@ data <- rbind(d_no42, d42_2020_fix) #the hole of data stil existing in TUW42 is 
 
 ##correct TUW31 and TUW32 switcharoo
 data1<-data %>% 
+  mutate(site_name = as.character(site_name))%>% 
   mutate(site_name = ifelse(site_name_original == "TUW31" & (DateTime>= "2021-07-01 17:28:26" & DateTime<= "2021-08-29 11:23:51"), "TUW32", site_name)) %>%
   mutate(site_name = ifelse(site_name_original == "TUW31" & (DateTime>= "2021-08-29 13:02:26" & DateTime<= "2021-08-29 13:03:42"), "TUW32", site_name)) %>%
   mutate(site_name = ifelse(site_name_original == "TUW32" & (DateTime>= "2021-07-01 17:55:22" & DateTime<= "2021-08-29 11:57:01"), "TUW31", site_name))
-
-
-
 
 ##establish transects + revised sites
 Sca <- c("TUW16",
@@ -224,7 +222,7 @@ data1 <- data1 %>% dplyr::arrange(DateTime)
 ##now the combination
 ###keep species names
   start_time <- Sys.time()                           #toggle to measure runtime
-combn(data1$common_name, 2, simplify=TRUE) -> m              #takes 2 min to run
+combn(data1$common_name, 2, simplify=TRUE) -> m              #takes 8 min to run
   end_time <- Sys.time()
   end_time - start_time
 m[1,] -> Species_1                               
@@ -232,20 +230,20 @@ m[2,] -> Species_2
 
 ##keep station name (referred to as site_name in this .csv)
   start_time <- Sys.time()                           #toggle to measure runtime
-combn(data1$site_name,2, simplify=TRUE) -> n                 #takes 2 min to run  
+combn(data1$site_name,2, simplify=TRUE) -> n                 #takes 8 min to run  
   end_time <- Sys.time()
   end_time - start_time
 n[1,] -> site_name                                
 
   start_time <- Sys.time()                           #toggle to measure runtime
-combn(as.character(data1$DateTime),2, simplify=TRUE) -> p    #takes 2 min to run
+combn(as.character(data1$DateTime),2, simplify=TRUE) -> p    #takes 8 min to run
   end_time <- Sys.time()
   end_time - start_time
 p[1,] -> a -> Date_1                     
 p[2,] -> b -> Date_2                         
 
 ##now estimate time difference between records with previous combn
-interval(a,b)->c                                             #takes 2 min to run
+interval(a,b)->c                                             #takes 5 min to run
 as.duration(c)->d
 as.numeric(d)/3600-> e    #time interval in hours 
 e -> time_interval
@@ -271,13 +269,13 @@ deercoyote <- output_dataset%>% subset( Species_1 =="deer") %>%
   subset(Species_2 == "coyote")
 #view(deercoyote) 
 
-allprey_allpred <- output_dataset%>% subset( Species_1 =="rabbit" | Species_1 =="deer" | Species_1 =="squirrel" | Species_1 =="raccoon" | Species_1 =="cat") %>%
-  subset(Species_2 == "fox" | Species_2 =="coyote")
-#view(allprey_allpred) 
-
-foxprey <- output_dataset%>% subset( Species_1 =="rabbit" | Species_1 =="squirrel" | Species_1 =="raccoon" | Species_1 =="cat") %>%
-  subset(Species_2 == "fox")
-#view(foxprey) 
+# allprey_allpred <- output_dataset%>% subset( Species_1 =="rabbit" | Species_1 =="deer" | Species_1 =="squirrel" | Species_1 =="raccoon" | Species_1 =="cat") %>%
+#   subset(Species_2 == "fox" | Species_2 =="coyote")
+# #view(allprey_allpred) 
+# 
+# foxprey <- output_dataset%>% subset( Species_1 =="rabbit" | Species_1 =="squirrel" | Species_1 =="raccoon" | Species_1 =="cat") %>%
+#   subset(Species_2 == "fox")
+# #view(foxprey) 
 
 #w/o cat & raccoon
 foxprey2 <- output_dataset%>% subset( Species_1 =="rabbit" | Species_1 =="squirrel") %>%
@@ -287,11 +285,6 @@ foxprey2 <- output_dataset%>% subset( Species_1 =="rabbit" | Species_1 =="squirr
 coyprey <- output_dataset%>% subset( Species_1 =="rabbit" | Species_1 =="deer" | Species_1 =="squirrel" | Species_1 =="raccoon" | Species_1 =="cat") %>%
   subset(Species_2 =="coyote")
 #view(coyprey) 
-
-
-#In the real dataset it will be something more like this of Course.
-#output_dataset%>% subset(Species_1 == "Dog" | Species_1 =="Coyote" | Species_1 =="Fox") %>%
-#subset(Species_2 == "Dog" | Species_2 =="Coyote" | Species_2 =="Fox")
 
 #plot predator-after-prey minimum waiting times 
 min_deercoyote <- filter(deercoyote, time_interval > 0)
@@ -304,16 +297,12 @@ min_foxprey <- filter(foxprey2, time_interval > 0)             #using foxprey2 (
 min_foxprey <- min_foxprey[!duplicated(min_foxprey$Date_1),]
 min_coyprey <- filter(coyprey, time_interval > 0)
 min_coyprey <- min_coyprey[!duplicated(min_coyprey$Date_1),]
-min_coyprey24 <- filter(coyprey, time_interval > 0)
-min_coyprey24 <- filter(coyprey, time_interval < 24)
-min_coyprey24 <- min_coyprey24[!duplicated(min_coyprey24$Date_1),]
-min_coyprey12<- filter(coyprey, time_interval > 0)
-min_coyprey12 <- filter(coyprey, time_interval < 12)
-min_coyprey12 <- min_coyprey12[!duplicated(min_coyprey12$Date_1),]
 
-min_rabbitfox12 <- filter(rabbitfox, time_interval > 0)
-min_rabbitfox12 <- filter(rabbitfox, time_interval < 12)
-min_rabbitfox12 <- min_rabbitfox12[!duplicated(min_rabbitfox12$Date_1),]
+min_coyprey_pup1 <- filter(min_coyprey, month(Date_1) == 5:8)
+min_coyprey_pup2 <- filter(coyprey, time_interval > 0)
+min_coyprey_pup2 <- filter(min_coyprey_pup2, month(Date_1) == 5:8)
+min_coyprey_pup2 <- min_coyprey_pup2[!duplicated(min_coyprey_pup2$Date_1),]
+
 
 #### PRED-PREY PLOTS ####
 
@@ -361,9 +350,21 @@ ggplot(data = min_coyprey,
   scale_x_continuous(limits=c(0,12))
 ggsave("waitingtime_coyprey_density_12.png")
 
-<<<<<<< HEAD
 #pup season
-ggplot(data = min_coyprey_pup, 
+
+#boxplot
+ggplot(data = min_coyprey_pup2, 
+       mapping = aes(x = Species_1, y = time_interval)) +
+  geom_boxplot(aes(fill = Species_1), show.legend = TRUE) +
+  theme_bw() +
+  labs(x = "Species",
+       y = "Minimum-time between detection at same site (hour)", 
+       title = "Minimum time-to-encounter, Prey then Coyote, 12 hrs - May to August") +
+  scale_y_continuous(limits=c(0,12))
+ggsave("waitingtime_coyprey_boxplot_12_summer.png")
+
+#Density
+ggplot(data = min_coyprey_pup2, 
        mapping = aes(x = time_interval, color = Species_1)) +
   geom_density()+
   theme_bw() +
@@ -372,9 +373,6 @@ ggplot(data = min_coyprey_pup,
        title = "Minimum time-to-encounter, Prey then Coyote, 12 hrs - May to August") +
   scale_x_continuous(limits=c(0,12))
 ggsave("waitingtime_coyprey_density_12_summer.png")
-
-=======
->>>>>>> parent of ee456cc (updated waiting time, RDS & plots)
 
 ##FOX VS ALL PREY
 
@@ -490,6 +488,7 @@ ggsave("waitingtime_foxprey_density_12.png")
 #   scale_x_continuous(limits=c(0,72))
 # ggsave("waitingtime_foxprey_72hr_histo1.png")
 
+###### OLDER STUFF #######
 
 #### GLMM: REGRESSION (WAITING TIME AGAINST COVARIATES) ####
 
