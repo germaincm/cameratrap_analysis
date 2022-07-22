@@ -180,5 +180,19 @@ coy_SOM <- occu(formula = ~ 1
 coy_best_fit_cov_list <- dredge(coy_SOM, 
                                 rank = "AIC")
 
+
+
+
 ###notes for interpretation
 ##at 1000 buffer, built was the best model , however not under 2 AIC score from null, just 0.62
+
+
+
+###code snip to check a specific model that has been ran by dredge ####
+
+modelList_2000 <- dredge(fit100,rank = "AIC")
+models2000 <- get.models(modelList_2000, subset = delta < 2)
+##to get a specific model from the dredge list
+models2000[[1]]
+
+#explanation models are retrieved as a list when running get.models() each item in the list is one of the models, to call the specific item, replace the 1 inside the double square bracket with the number of the model you want to check
