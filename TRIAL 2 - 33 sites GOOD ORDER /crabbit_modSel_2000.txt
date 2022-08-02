@@ -1,0 +1,12 @@
+               nPars     AIC delta AICwt cumltvWt
+fit_null          11 2579.11  0.00 0.185     0.19
+fit_Fdec_PA       12 2580.25  1.14 0.105     0.29
+fit_hum           12 2580.28  1.17 0.104     0.39
+fit_Fcon_PA       12 2580.62  1.51 0.087     0.48
+fit_WVF_dist      12 2580.63  1.52 0.087     0.57
+fit_Fmix_PA       12 2580.82  1.70 0.079     0.65
+fit_POP_mean      12 2580.97  1.85 0.073     0.72
+fit_LFT_dist      12 2580.99  1.87 0.073     0.79
+fit_WVF_PA        12 2581.06  1.94 0.070     0.86
+fit_POP_median    12 2581.11  1.99 0.068     0.93
+fit_imperv        12 2581.11  1.99 0.068     1.00

@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~Fdec_PA"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                         Estimate     SE      z P(>|z|)
+[coyote] (Intercept)         1.35  0.773  1.750  0.0801
+[cat] (Intercept)           -8.43 60.288 -0.140  0.8888
+[coyote:cat] (Intercept)     9.25 60.291  0.153  0.8781
+[coyote:cat] Fdec_PA         1.10  0.670  1.644  0.1002
+
+Detection (logit-scale):
+                      Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)   -0.4862 0.135 -3.603 3.15e-04
+[coyote] seasonspring   0.5983 0.185  3.232 1.23e-03
+[coyote] seasonsummer  -0.0537 0.190 -0.282 7.78e-01
+[coyote] seasonwinter   0.3914 0.181  2.162 3.06e-02
+[cat] (Intercept)      -1.4943 0.217 -6.874 6.23e-12
+[cat] seasonspring     -0.2057 0.299 -0.688 4.91e-01
+[cat] seasonsummer      0.2172 0.280  0.775 4.38e-01
+[cat] seasonwinter     -0.4829 0.306 -1.577 1.15e-01
+
+AIC: 2065.997 
+Number of sites: 33
+optim convergence code: 0
+optim iterations: 50 
+Bootstrap iterations: 0 
+
+$state
+                          Estimate         SE          z    P(>|z|)
+[coyote] (Intercept)      1.352744  0.7728335  1.7503690 0.08005467
+[cat] (Intercept)        -8.427937 60.2883079 -0.1397939 0.88882284
+[coyote:cat] (Intercept)  9.250279 60.2905005  0.1534285 0.87806040
+[coyote:cat] Fdec_PA      1.101323  0.6700241  1.6437065 0.10023685
+
+$det
+                         Estimate        SE          z      P(>|z|)
+[coyote] (Intercept)  -0.48619086 0.1349559 -3.6025900 3.150623e-04
+[coyote] seasonspring  0.59834145 0.1851039  3.2324621 1.227284e-03
+[coyote] seasonsummer -0.05370194 0.1902604 -0.2822550 7.777480e-01
+[coyote] seasonwinter  0.39138223 0.1809895  2.1624581 3.058289e-02
+[cat] (Intercept)     -1.49425462 0.2173713 -6.8742045 6.233671e-12
+[cat] seasonspring    -0.20566250 0.2987804 -0.6883399 4.912387e-01
+[cat] seasonsummer     0.21717807 0.2800799  0.7754148 4.380946e-01
+[cat] seasonwinter    -0.48289464 0.3062293 -1.5769054 1.148173e-01
+

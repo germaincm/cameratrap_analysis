@@ -1,0 +1,80 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~1"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                          Estimate   SE      z P(>|z|)
+[coyote] (Intercept)          9.97 44.1  0.226   0.821
+[deer] (Intercept)            8.26 44.1  0.187   0.852
+[coyote:deer] (Intercept)    -7.93 44.1 -0.180   0.857
+
+Detection (logit-scale):
+                      Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)   -0.4705 0.137 -3.429 0.000605
+[coyote] seasonspring   0.5826 0.187  3.120 0.001809
+[coyote] seasonsummer  -0.0694 0.192 -0.362 0.717374
+[coyote] seasonwinter   0.3755 0.183  2.056 0.039751
+[deer] (Intercept)     -0.0993 0.165 -0.602 0.547365
+[deer] seasonspring    -0.1504 0.232 -0.649 0.516612
+[deer] seasonsummer     0.6531 0.242  2.696 0.007025
+[deer] seasonwinter    -0.7849 0.235 -3.334 0.000855
+
+AIC: 2216.23 
+Number of sites: 28
+optim convergence code: 0
+optim iterations: 49 
+Bootstrap iterations: 0 
+
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~1"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                          Estimate   SE      z P(>|z|)
+[coyote] (Intercept)          9.97 44.1  0.226   0.821
+[deer] (Intercept)            8.26 44.1  0.187   0.852
+[coyote:deer] (Intercept)    -7.93 44.1 -0.180   0.857
+
+Detection (logit-scale):
+                      Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)   -0.4705 0.137 -3.429 0.000605
+[coyote] seasonspring   0.5826 0.187  3.120 0.001809
+[coyote] seasonsummer  -0.0694 0.192 -0.362 0.717374
+[coyote] seasonwinter   0.3755 0.183  2.056 0.039751
+[deer] (Intercept)     -0.0993 0.165 -0.602 0.547365
+[deer] seasonspring    -0.1504 0.232 -0.649 0.516612
+[deer] seasonsummer     0.6531 0.242  2.696 0.007025
+[deer] seasonwinter    -0.7849 0.235 -3.334 0.000855
+
+AIC: 2216.23 
+Number of sites: 28
+optim convergence code: 0
+optim iterations: 49 
+Bootstrap iterations: 0 
+
+               nPars     AIC delta AICwt cumltvWt
+fit_null          11 2216.23  0.00 0.167     0.17
+fit_LFT_dist      12 2216.82  0.59 0.124     0.29
+fit_WVF_dist      12 2217.31  1.08 0.097     0.39
+fit_POP_mean      12 2217.41  1.18 0.092     0.48
+fit_imperv        12 2217.52  1.29 0.087     0.57
+fit_POP_median    12 2217.78  1.55 0.077     0.64
+fit_hum           12 2217.81  1.58 0.076     0.72
+fit_WVF_PA        12 2217.86  1.63 0.074     0.79
+fit_Fmix_PA       12 2217.90  1.67 0.072     0.87
+fit_Fcon_PA       12 2218.01  1.78 0.068     0.93
+fit_Fdec_PA       12 2218.09  1.86 0.066     1.00
+               nPars     AIC delta AICwt cumltvWt
+fit_null          11 2216.23  0.00 0.167     0.17
+fit_LFT_dist      12 2216.82  0.59 0.124     0.29
+fit_WVF_dist      12 2217.31  1.08 0.097     0.39
+fit_POP_mean      12 2217.41  1.18 0.092     0.48
+fit_imperv        12 2217.52  1.29 0.087     0.57
+fit_POP_median    12 2217.78  1.55 0.077     0.64
+fit_hum           12 2217.81  1.58 0.076     0.72
+fit_WVF_PA        12 2217.86  1.63 0.074     0.79
+fit_Fmix_PA       12 2217.90  1.67 0.072     0.87
+fit_Fcon_PA       12 2218.01  1.78 0.068     0.93
+fit_Fdec_PA       12 2218.09  1.86 0.066     1.00

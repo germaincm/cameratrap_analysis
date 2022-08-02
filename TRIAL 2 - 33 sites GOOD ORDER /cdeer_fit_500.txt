@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~imperv"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                          Estimate     SE      z P(>|z|)
+[coyote] (Intercept)         10.15 50.708  0.200  0.8413
+[deer] (Intercept)            8.48 50.712  0.167  0.8673
+[coyote:deer] (Intercept)    -8.28 50.714 -0.163  0.8704
+[coyote:deer] imperv         -1.27  0.646 -1.965  0.0494
+
+Detection (logit-scale):
+                      Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)   -0.4913 0.135 -3.631 0.000282
+[coyote] seasonspring   0.6035 0.185  3.256 0.001131
+[coyote] seasonsummer  -0.0486 0.191 -0.255 0.798639
+[coyote] seasonwinter   0.3961 0.181  2.187 0.028714
+[deer] (Intercept)     -0.1150 0.162 -0.711 0.476922
+[deer] seasonspring    -0.1347 0.230 -0.587 0.557217
+[deer] seasonsummer     0.6688 0.240  2.786 0.005331
+[deer] seasonwinter    -0.7692 0.233 -3.300 0.000966
+
+AIC: 2239.71 
+Number of sites: 33
+optim convergence code: 0
+optim iterations: 52 
+Bootstrap iterations: 0 
+
+$state
+                           Estimate         SE          z    P(>|z|)
+[coyote] (Intercept)      10.150289 50.7076056  0.2001729 0.84134536
+[deer] (Intercept)         8.475824 50.7115962  0.1671378 0.86726163
+[coyote:deer] (Intercept) -8.276884 50.7138979 -0.1632074 0.87035513
+[coyote:deer] imperv      -1.270382  0.6463919 -1.9653428 0.04937457
+
+$det
+                         Estimate        SE          z      P(>|z|)
+[coyote] (Intercept)  -0.49130910 0.1353004 -3.6312461 0.0002820560
+[coyote] seasonspring  0.60346330 0.1853553  3.2557118 0.0011310851
+[coyote] seasonsummer -0.04859957 0.1905051 -0.2551090 0.7986388969
+[coyote] seasonwinter  0.39612672 0.1810956  2.1873900 0.0287140667
+[deer] (Intercept)    -0.11497037 0.1616427 -0.7112622 0.4769217778
+[deer] seasonspring   -0.13472658 0.2295252 -0.5869796 0.5572174215
+[deer] seasonsummer    0.66884107 0.2400469  2.7862934 0.0053314594
+[deer] seasonwinter   -0.76923011 0.2330835 -3.3002335 0.0009660442
+

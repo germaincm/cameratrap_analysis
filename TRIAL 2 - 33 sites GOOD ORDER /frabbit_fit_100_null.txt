@@ -1,0 +1,45 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~1"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                         Estimate   SE      z P(>|z|)
+[fox] (Intercept)            7.95 37.6  0.211   0.833
+[rabbit] (Intercept)         7.30 37.6  0.194   0.846
+[fox:rabbit] (Intercept)    -6.13 37.6 -0.163   0.871
+
+Detection (logit-scale):
+                      Estimate    SE      z P(>|z|)
+[fox] (Intercept)      -0.1451 0.134 -1.086 0.27744
+[fox] seasonspring     -0.1697 0.187 -0.905 0.36532
+[fox] seasonsummer     -0.4250 0.192 -2.211 0.02702
+[fox] seasonwinter     -0.0375 0.182 -0.206 0.83648
+[rabbit] (Intercept)   -0.4705 0.146 -3.224 0.00126
+[rabbit] seasonspring   0.3958 0.200  1.979 0.04785
+[rabbit] seasonsummer  -0.1187 0.204 -0.581 0.56124
+[rabbit] seasonwinter  -0.0495 0.198 -0.249 0.80309
+
+AIC: 2534.217 
+Number of sites: 33
+optim convergence code: 0
+optim iterations: 49 
+Bootstrap iterations: 0 
+
+$state
+                          Estimate       SE          z   P(>|z|)
+[fox] (Intercept)         7.946449 37.60723  0.2113011 0.8326523
+[rabbit] (Intercept)      7.303716 37.61292  0.1941810 0.8460341
+[fox:rabbit] (Intercept) -6.126170 37.61844 -0.1628502 0.8706364
+
+$det
+                         Estimate        SE          z     P(>|z|)
+[fox] (Intercept)     -0.14507028 0.1335725 -1.0860789 0.277444082
+[fox] seasonspring    -0.16970336 0.1874588 -0.9052837 0.365315101
+[fox] seasonsummer    -0.42495032 0.1921804 -2.2112048 0.027021658
+[fox] seasonwinter    -0.03753929 0.1818765 -0.2063999 0.836478583
+[rabbit] (Intercept)  -0.47048895 0.1459116 -3.2244800 0.001262017
+[rabbit] seasonspring  0.39578054 0.2000197  1.9787080 0.047848889
+[rabbit] seasonsummer -0.11870912 0.2043210 -0.5809933 0.561244981
+[rabbit] seasonwinter -0.04948394 0.1984487 -0.2493538 0.803087089
+

@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~Fcon_PA"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                              Estimate     SE         z P(>|z|)
+[coyote] (Intercept)            0.0272 78.310  0.000347  0.9997
+[squirrel] (Intercept)          8.2066 40.409  0.203090  0.8391
+[coyote:squirrel] (Intercept)   3.1670 78.337  0.040428  0.9678
+[coyote:squirrel] Fcon_PA      -1.0133  0.498 -2.036196  0.0417
+
+Detection (logit-scale):
+                        Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)     -0.4947 0.135 -3.675 2.38e-04
+[coyote] seasonspring     0.6069 0.185  3.283 1.03e-03
+[coyote] seasonsummer    -0.0452 0.190 -0.238 8.12e-01
+[coyote] seasonwinter     0.3998 0.181  2.213 2.69e-02
+[squirrel] (Intercept)    1.7604 0.176 10.024 1.19e-23
+[squirrel] seasonspring  -0.5178 0.232 -2.231 2.57e-02
+[squirrel] seasonsummer  -1.2738 0.220 -5.779 7.52e-09
+[squirrel] seasonwinter  -0.8839 0.219 -4.030 5.59e-05
+
+AIC: 2526.733 
+Number of sites: 33
+optim convergence code: 0
+optim iterations: 52 
+Bootstrap iterations: 0 
+
+$state
+                                 Estimate         SE             z    P(>|z|)
+[coyote] (Intercept)           0.02720897 78.3103502  0.0003474505 0.99972277
+[squirrel] (Intercept)         8.20661747 40.4088610  0.2030895515 0.83906504
+[coyote:squirrel] (Intercept)  3.16702406 78.3367831  0.0404283140 0.96775166
+[coyote:squirrel] Fcon_PA     -1.01330598  0.4976465 -2.0361962443 0.04173065
+
+$det
+                           Estimate        SE          z      P(>|z|)
+[coyote] (Intercept)    -0.49469196 0.1346219 -3.6746762 2.381512e-04
+[coyote] seasonspring    0.60686217 0.1848606  3.2828095 1.027781e-03
+[coyote] seasonsummer   -0.04518215 0.1900234 -0.2377715 8.120583e-01
+[coyote] seasonwinter    0.39981547 0.1806986  2.2126100 2.692454e-02
+[squirrel] (Intercept)   1.76038855 0.1756128 10.0242593 1.192503e-23
+[squirrel] seasonspring -0.51778946 0.2320621 -2.2312537 2.566433e-02
+[squirrel] seasonsummer -1.27377950 0.2204240 -5.7787706 7.524843e-09
+[squirrel] seasonwinter -0.88387844 0.2193429 -4.0296649 5.585643e-05
+

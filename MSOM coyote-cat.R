@@ -27,8 +27,7 @@ raccoon <- detection_matrix$raccoon %>%
 cat <- detection_matrix$cat %>%
   mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
 squirrel <- detection_matrix$squirrel %>%
-  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
-
+  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name)) 
 
 #### COVARIATES ########
 
@@ -51,6 +50,7 @@ b100 <- read.csv("cov_100.csv")%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
 b100 <- left_join(b100, human_dog_df, by="site_name")
 b100 <- left_join(b100, imperv, by="site_name") %>%
+  arrange(site_name) %>%
   dplyr::filter(site_name %in% unique(coyote$site_name)) ##filter those relevant for the analysis
 
 b500 <- read.csv("cov_500.csv")%>%
@@ -58,6 +58,7 @@ b500 <- read.csv("cov_500.csv")%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
 b500 <- left_join(b500, human_dog_df, by="site_name")
 b500 <- left_join(b500, imperv, by="site_name") %>%
+  arrange(site_name) %>%
   dplyr::filter(site_name %in% unique(coyote$site_name)) ##filter those relevant for the analysis
 
 b2000 <- read.csv("cov_2000.csv")%>%
@@ -65,8 +66,8 @@ b2000 <- read.csv("cov_2000.csv")%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
 b2000 <- left_join(b2000, human_dog_df, by="site_name")
 b2000 <- left_join(b2000, imperv, by="site_name") %>%
+  arrange(site_name) %>%
   dplyr::filter(site_name %in% unique(coyote$site_name)) ##filter those relevant for the analysis
-
 
 ##call occupancy covariates
 
@@ -190,19 +191,18 @@ sink("ccat_modSel_2000.txt")
 print(modSel(fit))
 sink()
 
-fit_ccat_100 <- fit_Fcon_PA #is best model
+fit_ccat_2000 <- fit_Fdec_PA #is best model
 
-sink("ccat_fit_100.txt")
-print(summary(fit_ccat_100))
+sink("ccat_fit_2000.txt")
+print(summary(fit_ccat_2000))
 sink()
 
 
 ##notes for interpretation
 ##COYOTE-CAT
-# at 100 buffer: Fcon_PA is the only model with with AIC <2 null model,
-#   but the effect is not significant
-# at 500 buffer:  no model with AIC <2 null 
-# at 2000 buffer:   no model with AIC <2 null 
+# at 100 buffer: the only model with AIC <2 null is Fcon_PA but the effect is not significant
+# at 500 buffer: the only model with AIC <2 null is Fcon_PA but the effect is not significant
+# at 2000 buffer: the only model with AIC <2 null is Fdec_PA but the effect is not significant
 
 
 #second selection

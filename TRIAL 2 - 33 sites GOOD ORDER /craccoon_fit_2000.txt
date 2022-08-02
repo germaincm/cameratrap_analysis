@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~POP_mean"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                             Estimate    SE      z P(>|z|)
+[coyote] (Intercept)            0.966 26.22 0.0369   0.971
+[raccoon] (Intercept)           6.893 22.32 0.3087   0.758
+[coyote:raccoon] (Intercept)    9.752 27.54 0.3541   0.723
+[coyote:raccoon] POP_mean       9.002  7.34 1.2272   0.220
+
+Detection (logit-scale):
+                       Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)    -0.4979 0.134 -3.722 1.97e-04
+[coyote] seasonspring    0.6100 0.184  3.311 9.30e-04
+[coyote] seasonsummer   -0.0421 0.189 -0.222 8.24e-01
+[coyote] seasonwinter    0.4031 0.180  2.237 2.53e-02
+[raccoon] (Intercept)    0.6302 0.130  4.829 1.37e-06
+[raccoon] seasonspring   0.9989 0.215  4.647 3.37e-06
+[raccoon] seasonsummer   0.5778 0.202  2.866 4.16e-03
+[raccoon] seasonwinter  -0.2159 0.179 -1.207 2.27e-01
+
+AIC: 2577.636 
+Number of sites: 33
+optim convergence code: 0
+optim iterations: 50 
+Bootstrap iterations: 0 
+
+$state
+                              Estimate        SE          z   P(>|z|)
+[coyote] (Intercept)         0.9661006 26.216813 0.03685042 0.9706043
+[raccoon] (Intercept)        6.8925468 22.324686 0.30874104 0.7575185
+[coyote:raccoon] (Intercept) 9.7518275 27.543057 0.35405756 0.7232957
+[coyote:raccoon] POP_mean    9.0016196  7.335183 1.22718412 0.2197534
+
+$det
+                          Estimate        SE          z      P(>|z|)
+[coyote] (Intercept)   -0.49790895 0.1337590 -3.7224331 1.973122e-04
+[coyote] seasonspring   0.60995735 0.1842329  3.3107957 9.303109e-04
+[coyote] seasonsummer  -0.04211349 0.1894149 -0.2223346 8.240534e-01
+[coyote] seasonwinter   0.40305780 0.1801667  2.2371380 2.527732e-02
+[raccoon] (Intercept)   0.63015054 0.1304937  4.8289746 1.372379e-06
+[raccoon] seasonspring  0.99885948 0.2149614  4.6466932 3.372982e-06
+[raccoon] seasonsummer  0.57779266 0.2016173  2.8657890 4.159714e-03
+[raccoon] seasonwinter -0.21590793 0.1788558 -1.2071619 2.273698e-01
+

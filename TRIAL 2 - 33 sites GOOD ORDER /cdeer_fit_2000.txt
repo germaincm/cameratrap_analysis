@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~imperv"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                          Estimate     SE      z P(>|z|)
+[coyote] (Intercept)         10.16 51.357  0.198  0.8432
+[deer] (Intercept)            8.46 51.361  0.165  0.8692
+[coyote:deer] (Intercept)    -8.29 51.364 -0.161  0.8718
+[coyote:deer] imperv         -1.33  0.644 -2.065  0.0389
+
+Detection (logit-scale):
+                      Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)   -0.4947 0.136 -3.627 0.000286
+[coyote] seasonspring   0.6069 0.186  3.260 0.001114
+[coyote] seasonsummer  -0.0452 0.191 -0.236 0.813202
+[coyote] seasonwinter   0.3988 0.182  2.196 0.028075
+[deer] (Intercept)     -0.1115 0.162 -0.689 0.490604
+[deer] seasonspring    -0.1382 0.230 -0.602 0.547098
+[deer] seasonsummer     0.6653 0.240  2.771 0.005584
+[deer] seasonwinter    -0.7727 0.233 -3.314 0.000920
+
+AIC: 2239.15 
+Number of sites: 33
+optim convergence code: 0
+optim iterations: 52 
+Bootstrap iterations: 0 
+
+$state
+                           Estimate         SE          z    P(>|z|)
+[coyote] (Intercept)      10.160719 51.3572330  0.1978440 0.84316714
+[deer] (Intercept)         8.458800 51.3614154  0.1646917 0.86918664
+[coyote:deer] (Intercept) -8.289494 51.3637505 -0.1613880 0.87178781
+[coyote:deer] imperv      -1.328918  0.6435267 -2.0650544 0.03891786
+
+$det
+                         Estimate        SE          z      P(>|z|)
+[coyote] (Intercept)  -0.49473823 0.1363880 -3.6274313 0.0002862549
+[coyote] seasonspring  0.60687035 0.1861506  3.2601042 0.0011137128
+[coyote] seasonsummer -0.04519893 0.1912794 -0.2362979 0.8132015254
+[coyote] seasonwinter  0.39884961 0.1816065  2.1962299 0.0280754949
+[deer] (Intercept)    -0.11146178 0.1616916 -0.6893481 0.4906042145
+[deer] seasonspring   -0.13822122 0.2295595 -0.6021151 0.5470975148
+[deer] seasonsummer    0.66532196 0.2400796  2.7712558 0.0055840535
+[deer] seasonwinter   -0.77265195 0.2331451 -3.3140386 0.0009195880
+

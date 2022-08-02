@@ -27,8 +27,7 @@ raccoon <- detection_matrix$raccoon %>%
 cat <- detection_matrix$cat %>%
   mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
 squirrel <- detection_matrix$squirrel %>%
-  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
-
+  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name)) 
 
 #### COVARIATES ########
 
@@ -51,6 +50,7 @@ b100 <- read.csv("cov_100.csv")%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
 b100 <- left_join(b100, human_dog_df, by="site_name")
 b100 <- left_join(b100, imperv, by="site_name") %>%
+  arrange(site_name) %>%
   dplyr::filter(site_name %in% unique(coyote$site_name)) ##filter those relevant for the analysis
 
 b500 <- read.csv("cov_500.csv")%>%
@@ -58,6 +58,7 @@ b500 <- read.csv("cov_500.csv")%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
 b500 <- left_join(b500, human_dog_df, by="site_name")
 b500 <- left_join(b500, imperv, by="site_name") %>%
+  arrange(site_name) %>%
   dplyr::filter(site_name %in% unique(coyote$site_name)) ##filter those relevant for the analysis
 
 b2000 <- read.csv("cov_2000.csv")%>%
@@ -65,6 +66,7 @@ b2000 <- read.csv("cov_2000.csv")%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
 b2000 <- left_join(b2000, human_dog_df, by="site_name")
 b2000 <- left_join(b2000, imperv, by="site_name") %>%
+  arrange(site_name) %>%
   dplyr::filter(site_name %in% unique(coyote$site_name)) ##filter those relevant for the analysis
 
 
@@ -190,7 +192,7 @@ sink("csquirrel_modSel_2000.txt")
 print(modSel(fit))
 sink()
 
-fit_csquirrel_2000 <- fit_multi4 #is best model
+fit_csquirrel_2000 <- fit_POP_mean #is best model
 
 sink("csquirrel_fit_2000.txt")
 print(summary(fit_csquirrel_2000))
@@ -199,39 +201,42 @@ sink()
 
 ##notes for interpretation
 ##COYOTE-SQUIRREL
-# at 100 buffer:  no model with AIC <2 null 
-# at 500 buffer:  no model with AIC <2 null 
-# at 2000 buffer: no model with AIC <2 null 
+# at 100 buffer: from the models with AIC <2 null model, Fcon_PA is the only one
+  # with a significant effect (-1.0133, p = 0.0417)
+# at 500 buffer: the model with lowest AIC is Fcon_PA, but it is unreliable because
+  # it produced NAs; other models not significant 
+# at 2000 buffer:  the model with lowest AIC is POP_mean, but the effect is not
+  # significant (9.04, p = 0.221); other models or combined models not more significant
 
 
 #second selection
 fit_multi1 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~LFT_dist+Fdec_PA'),
+                        stateformulas = c('~1', '~1', '~POP_mean+Fmix_PA'),
                         maxOrder = 2,
                         data = mdata)
 
 fit_multi2 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~Fdec_PA+LFT_dist'),
+                        stateformulas = c('~1', '~1', '~POP_mean+imperv'),
                         maxOrder = 2,
                         data = mdata)
 
 fit_multi3 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~Fdec_PA+WVF_dist'),
+                        stateformulas = c('~1', '~1', '~imperv+Fmix_PA+POP_mean'),
                         maxOrder = 2,
                         data = mdata)
 
-fit_multi4 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~Fdec_PA+Fcon_PA'),
-                        maxOrder = 2,
-                        data = mdata)
+# fit_multi4 <- occuMulti(detformulas = c('~season', '~season'),
+#                         stateformulas = c('~1', '~1', '~Fdec_PA+Fcon_PA'),
+#                         maxOrder = 2,
+#                         data = mdata)
+# 
+# fit_multi5 <- occuMulti(detformulas = c('~season', '~season'),
+#                         stateformulas = c('~1', '~1', '~Fdec_PA+Fmix_PA'),
+#                         maxOrder = 2,
+#                         data = mdata)
 
-fit_multi5 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~Fdec_PA+Fmix_PA'),
-                        maxOrder = 2,
-                        data = mdata)
 
-
-fit <- fitList(fit_Fdec_PA, fit_multi1, fit_multi2, fit_multi3, fit_multi4, fit_multi5)
+fit <- fitList(fit_POP_mean, fit_multi1, fit_multi2, fit_multi3)
 modSel(fit)
 
 

@@ -16,7 +16,8 @@ detection_matrix  <- readRDS("detection_matrix_revsites_28072022.rds")
 
 ###save species specific detection matrix into an object:
 coyote <- detection_matrix$coyote %>%
-  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
+  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name)) #%>%
+  #filter(rowSums(is.na(detection_matrix$coyote)) < 49) ##use this to reduce to only sites deployed for >4 weeks
 fox <- detection_matrix$fox %>%
   mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
 deer <- detection_matrix$deer %>%
@@ -28,8 +29,7 @@ raccoon <- detection_matrix$raccoon %>%
 cat <- detection_matrix$cat %>%
   mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
 squirrel <- detection_matrix$squirrel %>%
-  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
-
+  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name)) 
 
 #### COVARIATES ########
 
@@ -52,6 +52,7 @@ b100 <- read.csv("cov_100.csv")%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
 b100 <- left_join(b100, human_dog_df, by="site_name")
 b100 <- left_join(b100, imperv, by="site_name") %>%
+  arrange(site_name) %>%
   dplyr::filter(site_name %in% unique(coyote$site_name)) ##filter those relevant for the analysis
 
 b500 <- read.csv("cov_500.csv")%>%
@@ -59,6 +60,7 @@ b500 <- read.csv("cov_500.csv")%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
 b500 <- left_join(b500, human_dog_df, by="site_name")
 b500 <- left_join(b500, imperv, by="site_name") %>%
+  arrange(site_name) %>%
   dplyr::filter(site_name %in% unique(coyote$site_name)) ##filter those relevant for the analysis
 
 b2000 <- read.csv("cov_2000.csv")%>%
@@ -66,6 +68,7 @@ b2000 <- read.csv("cov_2000.csv")%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
 b2000 <- left_join(b2000, human_dog_df, by="site_name")
 b2000 <- left_join(b2000, imperv, by="site_name") %>%
+  arrange(site_name) %>%
   dplyr::filter(site_name %in% unique(coyote$site_name)) ##filter those relevant for the analysis
 
 ##call occupancy covariates
@@ -199,71 +202,70 @@ fit_POP_median <- occuMulti(detformulas = c('~season', '~season'),
                             maxOrder = 2,
                             data = mdata)
 
-fit_hum3 <- occuMulti(detformulas = c('~season', '~season'),
+fit_hum <- occuMulti(detformulas = c('~season', '~season'),
                      stateformulas = c('~1', '~1', '~total_freq_humans'),
                      maxOrder = 2,
                      data = mdata)
 
 
-fit3 <- fitList(fit_null, fit_WVF_dist, fit_WVF_PA, fit_Fdec_PA, fit_Fcon_PA,
+fit <- fitList(fit_null, fit_WVF_dist, fit_WVF_PA, fit_Fdec_PA, fit_Fcon_PA,
                fit_Fmix_PA, fit_imperv, fit_LFT_dist, fit_POP_mean,
-               fit_POP_median, fit_hum3)
-modSel(fit3)
+               fit_POP_median, fit_hum)
+modSel(fit)
 
-sink("cdeer_modSel_2000.txt")
-print(modSel(fit3))
+sink("cdeer_modSel_100.txt")
+print(modSel(fit))
 sink()
 
-fit_cdeer_2000 <- fit_LFT_dist #is best model
+fit_cdeer_100 <- fit_imperv #is best model
 
-sink("cdeer_fit_2000.txt")
-print(summary(fit_cdeer_2000))
+sink("cdeer_fit_100.txt")
+print(summary(fit_cdeer_100))
 sink()
 
 
 ##notes for interpretation
 ##COYOTE-DEER
-# at 100 buffer: LFT_dist is the only model with with AIC <2 null model,
-#   but the effect is not significant
-# at 500 buffer: LFT_dist is the only model with with AIC <2 null model,
-#   but the effect is not significant
-# at 2000 buffer: LFT_dist is the only model with with AIC <2 null model,
-#   but the effect is not significant
-
+# at 100 buffer: from the models with AIC <2 null model, Fdec_PA is the one with
+  # a most (near-)significant effect (1.32, p = 0.0571)
+# at 500 buffer: from the models with AIC <2 null model, IMPERV is the only one
+  # with a significant effect (-1.27, p = 0.0494)
+# at 2000 buffer: from the models with AIC <2 null model, IMPERV is the only one
+  # with a significant effect (-1.33, p = 0.0389)
 
 #second selection
 fit_multi1 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~LFT_dist+Fdec_PA'),
+                        stateformulas = c('~1', '~1', '~imperv+POP_mean'),
                         maxOrder = 2,
                         data = mdata)
 
 fit_multi2 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~Fdec_PA+LFT_dist'),
+                        stateformulas = c('~1', '~1', '~imperv+total_freq_humans'),
                         maxOrder = 2,
                         data = mdata)
 
 fit_multi3 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~Fdec_PA+WVF_dist'),
+                        stateformulas = c('~1', '~1', '~imperv+WVF_dist'),
                         maxOrder = 2,
                         data = mdata)
 
 fit_multi4 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~Fdec_PA+Fcon_PA'),
+                        stateformulas = c('~1', '~1', '~imperv+total_freq_humans+POP_mean+WVF_dist'),
                         maxOrder = 2,
                         data = mdata)
+# 
+# fit_multi5 <- occuMulti(detformulas = c('~season', '~season'),
+#                         stateformulas = c('~1', '~1', '~Fdec_PA+Fmix_PA'),
+#                         maxOrder = 2,
+#                         data = mdata)
+# 
+# fit_multi6 <- occuMulti(detformulas = c('~season', '~season'),
+#                         stateformulas = c('~1', '~1', '~Fdec_PA+Fcon_PA+Fmix_PA'),
+#                         maxOrder = 2,
+#                         data = mdata)
 
-fit_multi5 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~Fdec_PA+Fmix_PA'),
-                        maxOrder = 2,
-                        data = mdata)
 
-fit_multi6 <- occuMulti(detformulas = c('~season', '~season'),
-                        stateformulas = c('~1', '~1', '~Fdec_PA+Fcon_PA+Fmix_PA'),
-                        maxOrder = 2,
-                        data = mdata)
-
-
-fit <- fitList(fit_Fdec_PA, fit_multi1, fit_multi2, fit_multi3, fit_multi4, fit_multi5, fit_multi6)
+fit <- fitList(fit_null, fit_imperv, fit_hum, fit_multi1, fit_multi2, fit_multi3, fit_multi4)
 modSel(fit)
 
 

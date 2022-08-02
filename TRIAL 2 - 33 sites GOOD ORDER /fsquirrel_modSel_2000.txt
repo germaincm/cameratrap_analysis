@@ -1,0 +1,16 @@
+
+> print(modSel(fit))
+               nPars     AIC delta AICwt cumltvWt
+fit_Fdec_PA       12 2479.46  0.00 0.373     0.37
+fit_Fcon_PA       12 2480.92  1.45 0.180     0.55
+fit_imperv        12 2482.54  3.08 0.080     0.63
+fit_null          11 2482.74  3.28 0.072     0.70
+fit_hum           12 2482.81  3.35 0.070     0.77
+fit_POP_mean      12 2483.32  3.86 0.054     0.83
+fit_WVF_dist      12 2483.67  4.21 0.045     0.87
+fit_POP_median    12 2483.99  4.53 0.039     0.91
+fit_WVF_PA        12 2484.45  4.99 0.031     0.94
+fit_LFT_dist      12 2484.61  5.15 0.028     0.97
+fit_Fmix_PA       12 2484.63  5.17 0.028     1.00
+
+> sink()

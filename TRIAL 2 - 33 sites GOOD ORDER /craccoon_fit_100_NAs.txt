@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~total_freq_humans"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                                   Estimate SE  z P(>|z|)
+[coyote] (Intercept)                    3.0 NA NA      NA
+[raccoon] (Intercept)                  28.9 NA NA      NA
+[coyote:raccoon] (Intercept)           25.5 NA NA      NA
+[coyote:raccoon] total_freq_humans     48.6 NA NA      NA
+
+Detection (logit-scale):
+                       Estimate SE  z P(>|z|)
+[coyote] (Intercept)    -0.4694 NA NA      NA
+[coyote] seasonspring    0.5818 NA NA      NA
+[coyote] seasonsummer   -0.0703 NA NA      NA
+[coyote] seasonwinter    0.3749 NA NA      NA
+[raccoon] (Intercept)    0.7175 NA NA      NA
+[raccoon] seasonspring   0.9112 NA NA      NA
+[raccoon] seasonsummer   0.4901 NA NA      NA
+[raccoon] seasonwinter  -0.3029 NA NA      NA
+
+AIC: 2543.86 
+Number of sites: 28
+optim convergence code: 0
+optim iterations: 63 
+Bootstrap iterations: 0 
+
+$state
+                                    Estimate SE  z P(>|z|)
+[coyote] (Intercept)                2.995665 NA NA      NA
+[raccoon] (Intercept)              28.871776 NA NA      NA
+[coyote:raccoon] (Intercept)       25.477368 NA NA      NA
+[coyote:raccoon] total_freq_humans 48.582951 NA NA      NA
+
+$det
+                          Estimate SE  z P(>|z|)
+[coyote] (Intercept)   -0.46944427 NA NA      NA
+[coyote] seasonspring   0.58181241 NA NA      NA
+[coyote] seasonsummer  -0.07025125 NA NA      NA
+[coyote] seasonwinter   0.37489621 NA NA      NA
+[raccoon] (Intercept)   0.71749783 NA NA      NA
+[raccoon] seasonspring  0.91124634 NA NA      NA
+[raccoon] seasonsummer  0.49014684 NA NA      NA
+[raccoon] seasonwinter -0.30292363 NA NA      NA
+

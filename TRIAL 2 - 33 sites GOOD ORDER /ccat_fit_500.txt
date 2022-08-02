@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~Fcon_PA"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                         Estimate     SE      z P(>|z|)
+[coyote] (Intercept)         1.43  0.781  1.835  0.0664
+[cat] (Intercept)           -7.88 38.182 -0.206  0.8366
+[coyote:cat] (Intercept)     8.43 38.186  0.221  0.8253
+[coyote:cat] Fcon_PA        -1.53  0.945 -1.620  0.1051
+
+Detection (logit-scale):
+                      Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)   -0.4907 0.135 -3.645 2.68e-04
+[coyote] seasonspring   0.6027 0.185  3.260 1.11e-03
+[coyote] seasonsummer  -0.0494 0.190 -0.260 7.95e-01
+[coyote] seasonwinter   0.3957 0.181  2.189 2.86e-02
+[cat] (Intercept)      -1.4823 0.214 -6.942 3.87e-12
+[cat] seasonspring     -0.2180 0.296 -0.736 4.61e-01
+[cat] seasonsummer      0.2050 0.277  0.740 4.60e-01
+[cat] seasonwinter     -0.4900 0.304 -1.609 1.08e-01
+
+AIC: 2063.53 
+Number of sites: 33
+optim convergence code: 0
+optim iterations: 48 
+Bootstrap iterations: 0 
+
+$state
+                          Estimate         SE          z    P(>|z|)
+[coyote] (Intercept)      1.434342  0.7814626  1.8354580 0.06643785
+[cat] (Intercept)        -7.877280 38.1821856 -0.2063077 0.83655054
+[coyote:cat] (Intercept)  8.427391 38.1861778  0.2206922 0.82533212
+[coyote:cat] Fcon_PA     -1.531135  0.9448660 -1.6204785 0.10512953
+
+$det
+                         Estimate        SE          z      P(>|z|)
+[coyote] (Intercept)  -0.49065629 0.1346282 -3.6445275 2.678835e-04
+[coyote] seasonspring  0.60265922 0.1848648  3.2599998 1.114123e-03
+[coyote] seasonsummer -0.04935939 0.1900296 -0.2597458 7.950599e-01
+[coyote] seasonwinter  0.39569662 0.1807540  2.1891439 2.858638e-02
+[cat] (Intercept)     -1.48227143 0.2135304 -6.9417336 3.873171e-12
+[cat] seasonspring    -0.21801908 0.2960400 -0.7364515 4.614560e-01
+[cat] seasonsummer     0.20496393 0.2771193  0.7396233 4.595286e-01
+[cat] seasonwinter    -0.48997170 0.3044484 -1.6093753 1.075343e-01
+
