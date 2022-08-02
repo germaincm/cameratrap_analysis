@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~LFT_dist"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                          Estimate     SE      z P(>|z|)
+[coyote] (Intercept)         10.21 54.376  0.188   0.851
+[deer] (Intercept)            8.54 54.380  0.157   0.875
+[coyote:deer] (Intercept)    -8.35 54.382 -0.154   0.878
+[coyote:deer] LFT_dist       -1.14  0.763 -1.495   0.135
+
+Detection (logit-scale):
+                      Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)   -0.4917 0.135 -3.641 0.000271
+[coyote] seasonspring   0.6039 0.185  3.261 0.001110
+[coyote] seasonsummer  -0.0482 0.190 -0.253 0.800063
+[coyote] seasonwinter   0.3966 0.181  2.192 0.028393
+[deer] (Intercept)     -0.1197 0.162 -0.737 0.460824
+[deer] seasonspring    -0.1299 0.230 -0.565 0.572168
+[deer] seasonsummer     0.6736 0.241  2.801 0.005099
+[deer] seasonwinter    -0.7647 0.234 -3.275 0.001058
+
+AIC: 2241.704 
+Number of sites: 33
+optim convergence code: 0
+optim iterations: 53 
+Bootstrap iterations: 0 
+
+$state
+                           Estimate         SE          z   P(>|z|)
+[coyote] (Intercept)      10.212506 54.3759292  0.1878130 0.8510233
+[deer] (Intercept)         8.537626 54.3796384  0.1570004 0.8752445
+[coyote:deer] (Intercept) -8.351964 54.3818026 -0.1535801 0.8779408
+[coyote:deer] LFT_dist    -1.141240  0.7633493 -1.4950425 0.1349034
+
+$det
+                        Estimate        SE          z      P(>|z|)
+[coyote] (Intercept)  -0.4917475 0.1350532 -3.6411382 0.0002714354
+[coyote] seasonspring  0.6038587 0.1851748  3.2610196 0.0011101237
+[coyote] seasonsummer -0.0482041 0.1903302 -0.2532657 0.8000629181
+[coyote] seasonwinter  0.3966392 0.1809640  2.1918129 0.0283930224
+[deer] (Intercept)    -0.1197242 0.1623401 -0.7374901 0.4608243810
+[deer] seasonspring   -0.1299273 0.2300165 -0.5648608 0.5721684518
+[deer] seasonsummer    0.6736124 0.2405173  2.8006814 0.0050994832
+[deer] seasonwinter   -0.7646768 0.2335232 -3.2745215 0.0010584109
+

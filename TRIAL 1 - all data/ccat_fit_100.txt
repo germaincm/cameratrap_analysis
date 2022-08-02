@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~Fcon_PA"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                         Estimate     SE       z P(>|z|)
+[coyote] (Intercept)         1.40  0.784  1.7863  0.0741
+[cat] (Intercept)           -9.60 91.925 -0.1044  0.9168
+[coyote:cat] (Intercept)     7.12 95.116  0.0749  0.9403
+[coyote:cat] Fcon_PA       -13.04 91.299 -0.1428  0.8864
+
+Detection (logit-scale):
+                      Estimate    SE      z  P(>|z|)
+[coyote] (Intercept)   -0.4902 0.135 -3.638 2.75e-04
+[coyote] seasonspring   0.6023 0.185  3.257 1.13e-03
+[coyote] seasonsummer  -0.0497 0.190 -0.262 7.94e-01
+[coyote] seasonwinter   0.3953 0.181  2.186 2.88e-02
+[cat] (Intercept)      -1.5172 0.218 -6.969 3.19e-12
+[cat] seasonspring     -0.1823 0.299 -0.610 5.42e-01
+[cat] seasonsummer      0.2402 0.280  0.857 3.92e-01
+[cat] seasonwinter     -0.4604 0.306 -1.503 1.33e-01
+
+AIC: 2065.708 
+Number of sites: 33
+optim convergence code: 0
+optim iterations: 50 
+Bootstrap iterations: 0 
+
+$state
+                           Estimate         SE          z    P(>|z|)
+[coyote] (Intercept)       1.400449  0.7839957  1.7862972 0.07405114
+[cat] (Intercept)         -9.599125 91.9251018 -0.1044233 0.91683341
+[coyote:cat] (Intercept)   7.119672 95.1161513  0.0748524 0.94033215
+[coyote:cat] Fcon_PA     -13.038666 91.2990217 -0.1428128 0.88643805
+
+$det
+                         Estimate        SE          z      P(>|z|)
+[coyote] (Intercept)  -0.49021651 0.1347561 -3.6378066 2.749698e-04
+[coyote] seasonspring  0.60232185 0.1849582  3.2565301 1.127830e-03
+[coyote] seasonsummer -0.04972223 0.1901193 -0.2615318 7.936824e-01
+[coyote] seasonwinter  0.39533297 0.1808297  2.1862166 2.879976e-02
+[cat] (Intercept)     -1.51715162 0.2176978 -6.9690710 3.190407e-12
+[cat] seasonspring    -0.18232251 0.2990528 -0.6096666 5.420827e-01
+[cat] seasonsummer     0.24020351 0.2803220  0.8568842 3.915089e-01
+[cat] seasonwinter    -0.46036585 0.3063868 -1.5025644 1.329514e-01
+

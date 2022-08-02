@@ -9,81 +9,84 @@ library(rstan)
 getwd()
 setwd("~/Documents/GitHub/cameratrap_analysis")
 
-
 ###################START HERE IF WANTING TO USE DIRECTLY THE DETECTION MATRIX #############
 ###read directly the detection matrix RDS to avoid every step of this script up to here###
-library(unmarked)
-library(dplyr)
-library(lubridate)
-library(tidyverse)
-library(ggplot2)
-library(plyr)
-library(rstan)
-
-getwd()
-setwd("~/Documents/GitHub/cameratrap_analysis")
-
-
-###################START HERE IF WANTING TO USE DIRECTLY THE DETECTION MATRIX #############
-###read directly the detection matrix RDS to avoid every step of this script up to here###
-detection_matrix  <- readRDS(gzcon(url("https://github.com/germaincm/cameratrap_analysis/raw/main/detection_matrix_all_15072022.rds")))
+detection_matrix  <- readRDS("detection_matrix_revsites_28072022.rds")
 
 ###save species specific detection matrix into an object:
-coyote <- detection_matrix$coyote
-fox <- detection_matrix$fox
-deer <- detection_matrix$deer
-rabbit <- detection_matrix$rabbit
-raccoon <- detection_matrix$raccoon
-cat <- detection_matrix$cat
-squirrel <- detection_matrix$squirrel
+coyote <- detection_matrix$coyote %>%
+  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
+fox <- detection_matrix$fox %>%
+  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
+deer <- detection_matrix$deer %>%
+  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
+rabbit <- detection_matrix$rabbit %>%
+  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
+raccoon <- detection_matrix$raccoon %>%
+  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
+cat <- detection_matrix$cat %>%
+  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
+squirrel <- detection_matrix$squirrel %>%
+  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
 
 
 #### COVARIATES ########
 
 ##GENERATE COVARIATE dataframes for the model , make sure to readapt the site_names AND add human/dog presence####
-urlfile100="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/cov_100.csv"
-urlfile500="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/cov_500.csv"
-#urlfile1000="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/cov_1000.csv"
-urlfile2000="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/cov_2000.csv"
-urlfilehumans="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/human_dog_df.csv"
+# urlfile100="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/cov_100.csv"
+# urlfile500="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/cov_500.csv"
+# urlfile1000="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/cov_1000.csv"
+# urlfile2000="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/cov_2000.csv"
+# urlfilehumans="https://raw.githubusercontent.com/germaincm/cameratrap_analysis/main/human_dog_df.csv"
 
-human_dog_df <- read.csv(urlfilehumans) %>% 
+human_dog_df <- read.csv("human_dog_df.csv") %>% 
   select(-1) %>% 
-  select(site_name, total_freq_humans ,total_freq_dogs )
+  select(site_name, total_freq_humans ,total_freq_dogs ) %>% 
+  mutate(site_name = ifelse(site_name=="TUW35a", "TUW35", site_name))
 
-b100 <- read.csv(urlfile100)%>%
+imperv <- read.csv("cov_impervious.csv")
+
+b100 <- read.csv("cov_100.csv")%>%
   mutate(site_name = gsub("_", "", site_name))%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
-b100 <- left_join(b100, human_dog_df, by="site_name")%>%
-  dplyr::filter(site_name %in% unique(detection_matrix$deer$site_name)) ##filter those relevant for the analysis
+b100 <- left_join(b100, human_dog_df, by="site_name")
+b100 <- left_join(b100, imperv, by="site_name") %>%
+  dplyr::filter(site_name %in% unique(coyote$site_name)) ##filter those relevant for the analysis
 
-b500 <- read.csv(urlfile500)%>%
+b500 <- read.csv("cov_500.csv")%>%
   mutate(site_name = gsub("_", "", site_name))%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
-b500 <- left_join(b500, human_dog_df, by="site_name")%>%
-  dplyr::filter(site_name %in% unique(detection_matrix$deer$site_name)) ##filter those relevant for the analysis
+b500 <- left_join(b500, human_dog_df, by="site_name")
+b500 <- left_join(b500, imperv, by="site_name") %>%
+  dplyr::filter(site_name %in% unique(coyote$site_name)) ##filter those relevant for the analysis
 
-# b1000 <- read.csv(urlfile1000)%>%
-#   mutate(site_name = gsub("_", "", site_name))%>%
-#   mutate(site_name = gsub("TUW0", "TUW", site_name))
-# b1000 <- left_join(b1000, human_dog_df, by="site_name")%>%
-#   dplyr::filter(site_name %in% unique(detection_matrix$deer$site_name)) ##filter those relevant for the analysis
-
-b2000 <- read.csv(urlfile2000)%>%
+b2000 <- read.csv("cov_2000.csv")%>%
   mutate(site_name = gsub("_", "", site_name))%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
-b2000 <- left_join(b2000, human_dog_df, by="site_name")%>%
-  dplyr::filter(site_name %in% unique(detection_matrix$deer$site_name)) ##filter those relevant for the analysis
+b2000 <- left_join(b2000, human_dog_df, by="site_name")
+b2000 <- left_join(b2000, imperv, by="site_name") %>%
+  dplyr::filter(site_name %in% unique(coyote$site_name)) ##filter those relevant for the analysis
 
 
 ##call occupancy covariates
-cov<- b100 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area)
+
+#### here I've selected for only my covariates of interest
+cov<- b100 %>%
+  select(WVF_dist, WVF_PA, Fdec_PA, Fcon_PA, Fmix_PA, imperv_100, POP_mean,
+         POP_median, LFT_dist, total_freq_humans) %>%
+  dplyr::rename(imperv = imperv_100)
 cov100 <- as.data.frame(scale(cov))
 
-cov<- b500 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area)
+cov<- b500 %>%
+  select(WVF_dist, WVF_PA, Fdec_PA, Fcon_PA, Fmix_PA, imperv_500, POP_mean,
+         POP_median, LFT_dist, total_freq_humans) %>%
+  dplyr::rename(imperv = imperv_500)
 cov500 <- as.data.frame(scale(cov))
 
-cov<- b2000 %>% select(-1, -BUFF_DIST, -SHAPE_Length, -ORIG_FID, -SHAPE_Area)
+cov<- b2000 %>%
+  select(WVF_dist, WVF_PA, Fdec_PA, Fcon_PA, Fmix_PA, imperv_2000, POP_mean,
+         POP_median, LFT_dist, total_freq_humans) %>%
+  dplyr::rename(imperv = imperv_2000)
 cov2000 <- as.data.frame(scale(cov))
 
 ##call detection covariate matrix here if using
@@ -119,7 +122,7 @@ cr2000 <- unmarkedFrameOccuMulti(y = y_list,
                                  obsCovs = det_list)
 
 ##call animal data
-mdata <- cr100
+mdata <- cr2000
 
 #first selection
 fit_null <- occuMulti(detformulas = c('~season', '~season'),
@@ -152,10 +155,10 @@ fit_Fmix_PA <- occuMulti(detformulas = c('~season', '~season'),
                          maxOrder = 2,
                          data = mdata)
 
-fit_built <- occuMulti(detformulas = c('~season', '~season'),
-                       stateformulas = c('~1', '~1', '~built'),
-                       maxOrder = 2,
-                       data = mdata)
+fit_imperv <- occuMulti(detformulas = c('~season', '~season'),
+                        stateformulas = c('~1', '~1', '~imperv'),
+                        maxOrder = 2,
+                        data = mdata)
 
 fit_LFT_dist <- occuMulti(detformulas = c('~season', '~season'),
                           stateformulas = c('~1', '~1', '~LFT_dist'),
@@ -179,7 +182,7 @@ fit_hum <- occuMulti(detformulas = c('~season', '~season'),
 
 
 fit <- fitList(fit_null, fit_WVF_dist, fit_WVF_PA, fit_Fdec_PA, fit_Fcon_PA,
-               fit_Fmix_PA, fit_built, fit_LFT_dist, fit_POP_mean,
+               fit_Fmix_PA, fit_imperv, fit_LFT_dist, fit_POP_mean,
                fit_POP_median, fit_hum)
 modSel(fit)
 
@@ -187,7 +190,7 @@ sink("crabbit_modSel_2000.txt")
 print(modSel(fit))
 sink()
 
-fit_crabbit_2000 <- fit_multi4 #is best model
+fit_crabbit_2000 <- fit_null #is best model
 
 sink("crabbit_fit_2000.txt")
 print(summary(fit_crabbit_2000))
@@ -196,11 +199,10 @@ sink()
 
 ##notes for interpretation
 ##COYOTE-RABBIT
-# at 100 buffer:
-
-# at 500 buffer:
-
-# at 2000 buffer: 
+# at 100 buffer: imperv is the only model with with AIC <2 null model,
+#   but the effect is not significant
+# at 500 buffer:  no model with AIC <2 null 
+# at 2000 buffer:  no model with AIC <2 null 
 
 
 #second selection

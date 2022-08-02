@@ -1,0 +1,47 @@
+
+Call:
+occuMulti(detformulas = c("~season", "~season"), stateformulas = c("~1", 
+    "~1", "~Fcon_PA"), data = mdata, maxOrder = 2)
+
+Occupancy (logit-scale):
+                           Estimate    SE      z P(>|z|)
+[fox] (Intercept)            -5.920 23.61 -0.251   0.802
+[squirrel] (Intercept)        0.978  1.33  0.733   0.464
+[fox:squirrel] (Intercept)    8.784 23.65  0.371   0.710
+[fox:squirrel] Fcon_PA       -1.932  1.58 -1.223   0.221
+
+Detection (logit-scale):
+                        Estimate    SE      z  P(>|z|)
+[fox] (Intercept)        -0.1545 0.134 -1.153 2.49e-01
+[fox] seasonspring       -0.1603 0.188 -0.854 3.93e-01
+[fox] seasonsummer       -0.4155 0.192 -2.159 3.08e-02
+[fox] seasonwinter       -0.0293 0.182 -0.161 8.72e-01
+[squirrel] (Intercept)    1.8121 0.180 10.069 7.60e-24
+[squirrel] seasonspring  -0.5697 0.235 -2.420 1.55e-02
+[squirrel] seasonsummer  -1.3259 0.224 -5.921 3.19e-09
+[squirrel] seasonwinter  -0.9358 0.223 -4.199 2.68e-05
+
+AIC: 2475.857 
+Number of sites: 33
+optim convergence code: 0
+optim iterations: 51 
+Bootstrap iterations: 0 
+
+$state
+                             Estimate        SE          z   P(>|z|)
+[fox] (Intercept)          -5.9197432 23.611056 -0.2507191 0.8020313
+[squirrel] (Intercept)      0.9781877  1.334854  0.7328049 0.4636774
+[fox:squirrel] (Intercept)  8.7840702 23.645014  0.3714978 0.7102668
+[fox:squirrel] Fcon_PA     -1.9322597  1.579976 -1.2229676 0.2213419
+
+$det
+                           Estimate        SE          z      P(>|z|)
+[fox] (Intercept)       -0.15448235 0.1339697 -1.1531144 2.488634e-01
+[fox] seasonspring      -0.16030227 0.1877420 -0.8538432 3.931919e-01
+[fox] seasonsummer      -0.41554786 0.1924568 -2.1591744 3.083664e-02
+[fox] seasonwinter      -0.02927338 0.1817140 -0.1610959 8.720179e-01
+[squirrel] (Intercept)   1.81211101 0.1799761 10.0686179 7.603909e-24
+[squirrel] seasonspring -0.56967453 0.2353769 -2.4202648 1.550921e-02
+[squirrel] seasonsummer -1.32588128 0.2239122 -5.9214346 3.191453e-09
+[squirrel] seasonwinter -0.93579563 0.2228485 -4.1992449 2.678065e-05
+

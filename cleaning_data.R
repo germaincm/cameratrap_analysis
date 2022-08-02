@@ -1,18 +1,23 @@
 ###trying to clean undeployed periods of time
 library(dplyr)
-library(lubridate)
 library(plyr)
 library(tidyverse)
+library(lubridate)
 library(rstan)
 library(unmarked)
 library(ggplot2)
 
 getwd()
-setwd("~/Documents/GitHub/cameratrap_analysis")
+setwd("C:/Users/tizge/Documents/GitHub/cameratrap_analysis")
 
-data<-read_csv("TimelapseDatabase_FULL_14072022 (1).csv")%>%
-  filter(DeleteFlag == FALSE)%>%
-  filter(revised==TRUE)
+####quick checkup
+# read_csv("TimelapseDatabase_FULL_28072022.csv") %>%
+#   filter(RelativePath == "TUW36")
+
+data<-read_csv("TimelapseDatabase_FULL_28072022.csv")%>%
+  filter(revised==TRUE) %>%
+  filter(DeleteFlag == FALSE)
+
 #write.csv(data, "TimelapseDatabase_FULL_04072022_nodeletes_onlyrevised.csv")##not getting smaller
 ###load raw timelapse export csv ####
 data<-data%>%
@@ -33,7 +38,6 @@ data<-data%>%
   dplyr::mutate(site_name = factor(site_name))%>% 
   dplyr::mutate(date = factor(date(DateTime)))%>% 
   dplyr::mutate(common_name = factor(common_name))
-
 #View(data)
 
 ##add deployment periods####
@@ -45,7 +49,10 @@ dp<- read_csv("deployment_period.csv")%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
 data<- left_join(data, dp, by="site_name")
 
-#####checking deployment period is correct (for record)####
+##check  before 35 was disappearing because it wasnt in deployment period
+levels(factor(data$site_name))
+
+#####checking depoloyment period is correct (for record)####
 ####
 # v <- data %>% 
 #   mutate(within_deployment_period = ifelse(as.Date(DateTime)>=as.Date(start)&as.Date(DateTime)<=as.Date(end),1,0))%>%
@@ -74,10 +81,10 @@ data <- rbind(d_no42, d42_2020_fix) #the hole of data stil existing in TUW42 is 
 
 ##correct TUW31 and TUW32 switcharoo
 data<-data %>% 
+  mutate(site_name = as.character(site_name)) %>%
   mutate(site_name = ifelse(site_name_original == "TUW31" & (DateTime>= "2021-07-01 17:28:26" & DateTime<= "2021-08-29 11:23:51"), "TUW32", site_name)) %>%
   mutate(site_name = ifelse(site_name_original == "TUW31" & (DateTime>= "2021-08-29 13:02:26" & DateTime<= "2021-08-29 13:03:42"), "TUW32", site_name)) %>%
   mutate(site_name = ifelse(site_name_original == "TUW32" & (DateTime>= "2021-07-01 17:55:22" & DateTime<= "2021-08-29 11:57:01"), "TUW31", site_name))
-
 
 ##transects
 Sca <- c("TUW16",
@@ -125,7 +132,7 @@ Don <- c("TUW13",
          "TUW33b",
          "TUW33c",
          "TUW34",
-         "TUW35",
+         "TUW35a",
          "TUW35b",
          "TUW36",
          "TUW36b",
@@ -136,7 +143,7 @@ Don <- c("TUW13",
 CPC <- c("CPC1","CPC2", "CPC3", "CPC4", "CPC5", "CPC6")
 
 rev_sites <- c("TUW17",
-               #"TUW18",
+               "TUW18",
                "TUW19", 
                "TUW21", 
                "TUW23",
@@ -149,56 +156,64 @@ rev_sites <- c("TUW17",
                "TUW29b",
                "TUW39",
                "TUW42",
+               "TUW35a",
                "TUW36",
                "TUW38",
                "TUW37b",
-               "TUW35a",
                "TUW37",
-               #"TUW36b",
-               #"TUW33b",
-               #"TUW34",
+               "TUW36b",
+               "TUW33b",
+               "TUW34",
                "TUW38b",
-               #"TUW35b",
+               "TUW35b",
                #"TUW32",
                "TUW31",
+               #TUW30,
                #"TUW33",
-               "TUW2")
-               #"TUW14",
-               #"TUW1")
-
-###write DateTime dataframe for waiting time script
-d <- data %>%
-  filter(site_name %in% rev_sites)
-write.csv(d, "data_wt_revised.csv")
+               "TUW2",
+               "TUW14",
+               "TUW1",
+               "TUW4",
+               "TUW4b",
+               "TUW8",
+               "TUW5",
+               "TUW6")
 
 # ###determining malfunction dates (for record) visually check for periods when camera was not functioning#####
 # dpS <- data %>% filter(site_name == Sca)%>% ### I replotted this one after fixing TUW42
 #   filter(site_name != "TUW20")%>%
-#   ggplot(aes(x = as.POSIXct(DateTime))) + 
-#   geom_histogram(bins=120) + 
+#   ggplot(aes(x = as.POSIXct(DateTime))) +
+#   geom_histogram(bins=120) +
 #   facet_wrap(~site_name, scales="free_y")
 # ggsave(dpS, "Humber_images.png")
-# 
+# # 
 # dpH <- data %>% filter(site_name == Hum)%>%
-#   ggplot(aes(x = as.POSIXct(DateTime))) + 
-#   geom_histogram(bins=120) + 
+#   ggplot(aes(x = as.POSIXct(DateTime))) +
+#   geom_histogram(bins=120) +
 #   facet_wrap(~site_name, scales="free_y")+
 #   scale_x_datetime(date_labels = "%Y", date_minor_breaks = "1 month", name = "time scale")
 # ggsave(dpH, "Humber_images.png")
-# 
+# # 
 # dpD <- data %>% filter(site_name == Don)%>%
-#   ggplot(aes(x = as.POSIXct(DateTime))) + 
-#   geom_histogram(bins=120) + 
+#   ggplot(aes(x = as.POSIXct(DateTime))) +
+#   geom_histogram(bins=120) +
 #   facet_wrap(~site_name, scales="free_y")+
 #   scale_x_datetime(date_labels = "%Y", date_minor_breaks = "1 month", name = "time scale")
 # ggsave(dpD, "Don_images.png")
-#
+# #
 # dpC <- data %>% filter(site_name == CPC)%>%
-#   ggplot(aes(x = as.POSIXct(DateTime))) + 
-#   geom_histogram(bins=120) + 
+#   ggplot(aes(x = as.POSIXct(DateTime))) +
+#   geom_histogram(bins=120) +
 #   facet_wrap(~site_name, scales="free_y")+
 #   scale_x_datetime(date_labels = "%Y", date_minor_breaks = "1 month", name = "time scale")
 # ggsave(dpC, "CPCimages.png")
+# 
+# dpR <- data %>% filter(site_name == rev_sites)%>%
+#   ggplot(aes(x = as.POSIXct(DateTime))) +
+#   geom_histogram(bins=120) +
+#   facet_wrap(~site_name, scales="free_y")+
+#   scale_x_datetime(date_labels = "%Y", date_minor_breaks = "1 month", name = "time scale")
+# ggsave(dpR "CPCimages.png")
 
 ###check specific cameras and correct#
 
@@ -387,7 +402,6 @@ write.csv(d, "data_wt_revised.csv")
 # data <- left_join(data, malf, by="site_name")
 # 
 # 
-
 ####reading malfunction dates from csv ####
 malf<-read_csv("malf.csv") %>% select(-...1)
 dp_malf<- left_join(dp, malf, by="site_name")
@@ -396,6 +410,12 @@ dp_malf<- dp_malf%>%
   mutate(date_end = as.Date(end))%>%
   select(!start)%>%
   select(!end)
+
+###error: we have only the scarborough malfunctioning dates###
+setdiff(rev_sites, malf$site_name) #sites not in malf, which are needed for rev_sites
+# [1] "TUW17"  "TUW18"  "TUW25"  "TUW26"  "TUW29"  "TUW29b" "TUW42"  "TUW35a"
+# [9] "TUW36"  "TUW38"  "TUW37"  "TUW33b" "TUW38b" "TUW14"  "TUW1"   "TUW4"  
+# [17] "TUW4b"  "TUW8"   "TUW5"   "TUW6" 
 
 # add malfunction dates
 data<- left_join(data, dp_malf, by = "site_name")
@@ -475,7 +495,7 @@ write.csv(d, "data_counts_week.csv")
 ###check results of for loop
 d%>%
   dplyr::filter(common_name == "coyote")%>%
-  dplyr::filter(site_name == "TUW2")
+  dplyr::filter(site_name == "TUW35a")
 
 #####create human presence, dogs presence dataframe as covariates ####
 
@@ -496,7 +516,7 @@ data_humans_total<- data_counts_pre%>%
 d5 <- left_join(total_weeks_deployed, data_humans_total, by="site_name") 
 ##divide by total number of days deployed
 d5 <- d5 %>% mutate(total_freq_humans = total_humans/total_weeks_deployed)
-
+#View(data_humans_total)
 ##estimate total humans per week per site ## in case we need weekly presence of humans for the detection ####
 data_humans_weekly <- data_counts_pre%>%
   filter(humans == TRUE) %>%
@@ -530,10 +550,10 @@ d5 <- d5 %>% mutate(total_dogs_free = ifelse(is.na(total_dogs_free), 0, total_do
 
 
 human_dog_df <- d5
-View(human_dog_df)
+#View(human_dog_df)
 write.csv(human_dog_df, "human_dog_df.csv")
-
-###number of dogs per wee
+#human_dog_df <- read.csv("human_dog_df.csv")
+###number of dogs per week
 d%>% dplyr::filter(common_name == "dog")
 
 
@@ -542,16 +562,16 @@ d%>% dplyr::filter(common_name == "dog")
 ###read "data_counts_week.csv" to avoid all previous code using:
 ### use the github version for the latest update
 
-#d <- read.csv("https://raw.githubusercontent.com/tgelmi-candusso/cameratrap_analysis/main/data_counts_week.csv") %>% select(-1)
+
+#d <- read.csv("https://raw.githubusercontent.com/tgelmi-candusso/cameratrap_analysis/main/data_counts_week_scarborough.csv") %>% select(-1)
 
 #1. filter transect/sites of interest here (previously made as vectors on line 85)
-d <- d %>%
-  dplyr::filter(site_name %in% rev_sites)
+d <- d %>% dplyr::filter(site_name %in% rev_sites)
 
 ##initiate detection matrix list
 detection_matrix <- list()
 
-###trying to do loop in progress
+###loop filtering species and create a list of detection matrices per animals 
 for (sp in unique(d$common_name)){
   d1<- d %>% dplyr::filter(common_name == sp)
   d2<- d1%>%
@@ -565,11 +585,11 @@ for (sp in unique(d$common_name)){
 }
 
 
-saveRDS(detection_matrix, "detection_matrix_all_15072022.rds")
+saveRDS(detection_matrix, "detection_matrix_revsites_28072022.rds")
 
 ###################START HERE IF WANTING TO USE DIRECTLY THE DETECTION MATRIX #############
 ###read directly the detection matrix RDS to avoid every step of this script up to here###
-detection_matrix  <- readRDS(gzcon(url("https://github.com/tgelmi-candusso/cameratrap_analysis/raw/main/detection_matrix_Scarborough.rds")))
+detection_matrix  <- readRDS(gzcon(url("https://github.com/tgelmi-candusso/cameratrap_analysis/raw/main/detection_matrix_revsites_15072022.rds")))
                               
 ##now to call for the detection matrix of a specific animal you can call it this way
 detection_matrix$deer
@@ -580,16 +600,17 @@ coyote<-detection_matrix$coyote
 deer<-detection_matrix$deer
 
 #### COVARIATES ########
-
+library(readr)
 ##GENERATE COVARIATE dataframes for the model , make sure to readapt the site_names AND add human/dog presence####
 urlfile500="https://raw.githubusercontent.com/tgelmi-candusso/cameratrap_analysis/main/cov_500.csv"
 urlfile1000="https://raw.githubusercontent.com/tgelmi-candusso/cameratrap_analysis/main/cov_1000.csv"
 urlfile2000="https://raw.githubusercontent.com/tgelmi-candusso/cameratrap_analysis/main/cov_2000.csv"
+##needs to be updated
 urlfilehumans="https://raw.githubusercontent.com/tgelmi-candusso/cameratrap_analysis/main/human_dog_df.csv"
 
-human_dog_df <- read.csv(urlfilehumans) %>% 
+human_dog_df <- read_csv(urlfilehumans) %>% 
   select(-1) %>% 
-  select(site_name, total_freq_humans ,total_freq_dogs )
+  select(site_name, total_freq_humans ,total_freq_dogs, total_weeks_deployed)
 
 b500 <- read_csv(urlfile500)%>%
   mutate(site_name = gsub("_", "", site_name))%>%
@@ -603,12 +624,37 @@ b1000 <- read_csv(urlfile1000)%>%
 b1000 <- left_join(b1000, human_dog_df, by="site_name")%>%
   dplyr::filter(site_name %in% unique(detection_matrix$deer$site_name)) ##filter those for relevant for the analysis
 
-
 b2000 <- read_csv(urlfile2000)%>%
   mutate(site_name = gsub("_", "", site_name))%>%
   mutate(site_name = gsub("TUW0", "TUW", site_name))
 b2000 <- left_join(b2000, human_dog_df, by="site_name")%>%
   dplyr::filter(site_name %in% unique(detection_matrix$deer$site_name)) ##filter those for relevant for the analysis
 
+###### species count/frequency per site across the year unit: percentage (in decimals) of weeks of deployment with presence of the species.
+#initiation objects
+species_count <- as.data.frame(rev_sites) 
+colnames(species_count) <- "site_name"
+
+#loop
+for (i in seq(1, length(detection_matrix), by=1)){
+  matrix <- as.data.frame(detection_matrix[[i]])  #convert listed df as df with no name here the two [[]] are key.
+  matrix<- matrix %>% dplyr::filter(site_name %in% rev_sites) %>%
+    mutate(count =  select(.,2:54) %>% rowSums(na.rm = TRUE)) #sum across rows
+  weeks_deployed <- human_dog_df %>% dplyr::filter(site_name %in% rev_sites) %>% 
+    select('site_name', 'total_weeks_deployed')  #number of weeks deployed and filter for used sites
+  matrix <- left_join(matrix, weeks_deployed, by= "site_name") #add the weeks deployed data to main df
+  matrix <- matrix %>% mutate(freq =  (count+0.01)/total_weeks_deployed) #frequency math
+  matrix_sel <- matrix %>% select(site_name, freq) #simplify for final output
+  species_count <- left_join(species_count, matrix_sel, by="site_name") #append results to initiation object with the site_names 
+}
+##clean the final output by fixing column names to species names
+names <- names(detection_matrix)
+names <- c("site_name", names)
+colnames(species_count) <- names
+
+XY2 <- read.csv("sites_XY2.csv") %>% select (site_name, X, Y)
+species_count <- left_join(species_count, XY2, by="site_name")
+##save csv for further use in arcgis
+write.csv(species_count, "species_frequencies.csv")
 
 
